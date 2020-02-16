@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Home Page</string>
+    <string name="destination">Destination</string>
+    <string name="mode_of_transport">Mode of Transport</string>
+    <string name="nameoftheapp">Trail Safe</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
+    <string name="next">next</string>
+    <string name="congratulations">Congratulations!</string>
+    <string name="you_have_arrived_on_time">You Have Arrived On Time</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="dropped_pin">Dropped Pin</string>
+    <string name="title_activity_2">Activity2</string>
+    <string name="title_activity_recording_">Recording_Activity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_recording_screen">recording_screen</string>
+</resources>
