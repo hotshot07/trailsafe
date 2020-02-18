@@ -62,7 +62,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
+
+
         map = googleMap
+        enableMyLocation()
+
         val lat = 53.344724
         val longitude = -6.254615
         // Add a marker in trinners and move the camera
@@ -72,7 +76,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         //map.addMarker(MarkerOptions().position(trinity).title("Marker at Trinity"))
         setMapLongClick(map)
         setPoiClick(map)
-        enableMyLocation()
+
         val test = 1
     }
 
@@ -136,5 +140,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 enableMyLocation()
             }
         }
+    }
+
+    private fun centerOnMyLocation(){
+        enableMyLocation()
+
+        val myLocation = map.my
     }
 }
