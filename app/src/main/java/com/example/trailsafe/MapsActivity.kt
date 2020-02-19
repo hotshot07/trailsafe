@@ -145,6 +145,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun centerOnMyLocation(){
         enableMyLocation()
 
-        val myLocation = map.my
+        val myLocation = map.my //David: Im getting an error here on 'my'
     }
 }
