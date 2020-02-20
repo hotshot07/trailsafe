@@ -144,6 +144,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun centerOnMyLocation(){
+<<<<<<< HEAD
         map.setOnMyLocationClickListener { }
+=======
+        enableMyLocation()
+
+        val myLocation = map.my //David: Im getting an error here on 'my'
+>>>>>>> f782f43bf64c7a11e8662e05a9008f553d83f694
     }
 }
