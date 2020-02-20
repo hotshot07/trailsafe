@@ -26,13 +26,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private val TAG = MapsActivity::class.java.simpleName
     private val REQUEST_LOCATION_PERMISSION = 1
-   // private searchView
-
-
+    // private searchView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState )
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -49,8 +47,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
     }
-
-
 
 
     /**
@@ -73,7 +69,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in trinners and move the camera
         val trinity = LatLng(lat, longitude)
         val zoomLevel = 15f
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(trinity,zoomLevel))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(trinity, zoomLevel))
         //map.addMarker(MarkerOptions().position(trinity).title("Marker at Trinity"))
         setMapLongClick(map)
         setPoiClick(map)
@@ -81,8 +77,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val test = 1
     }
 
-    private fun setMapLongClick(map:GoogleMap){
-        map.setOnMapLongClickListener {latLng ->
+    private fun setMapLongClick(map: GoogleMap) {
+        map.setOnMapLongClickListener { latLng ->
             val snippet = String.format(
                 Locale.getDefault(),
                 "Lat: %1$.5f, Long: %2$.5f",
@@ -101,8 +97,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-    private fun setPoiClick(map: GoogleMap){
-        map.setOnPoiClickListener {poi->
+    private fun setPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener { poi ->
             val poiMarker = map.addMarker(
                 MarkerOptions()
                     .position(poi.latLng)
@@ -112,18 +108,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun isPermissionGranted():Boolean{
+    private fun isPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
-            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
 
     }
 
     private fun enableMyLocation() {
         if (isPermissionGranted()) {
             map.isMyLocationEnabled = true
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf<String>(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -135,21 +131,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray) {
+        grantResults: IntArray
+    ) {
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 enableMyLocation()
             }
         }
-    }
-
-    private fun centerOnMyLocation(){
-<<<<<<< HEAD
-        map.setOnMyLocationClickListener { }
-=======
-        enableMyLocation()
-
-        val myLocation = map.my //David: Im getting an error here on 'my'
->>>>>>> f782f43bf64c7a11e8662e05a9008f553d83f694
     }
 }
