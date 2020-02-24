@@ -9,7 +9,7 @@
     <string name="next">next</string>
     <string name="go">Go</string>
     <string name="Start_Point">Start Point</string>
-    <string name="Finish_Point">Finish Point</string>
+    <string name="Finish_Point">End Point</string>
     <string name="congratulations">Congratulations!</string>
     <string name="you_have_arrived_on_time">You Have Arrived On Time</string>
     <string name="title_activity_maps">Map</string>
