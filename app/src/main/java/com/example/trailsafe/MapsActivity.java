@@ -1,10 +1,6 @@
 package com.example.trailsafe;
 
-//<<<<<<< Updated upstream
-/*import androidx.core.app.ActivityCompat;
-=======
 import androidx.core.app.ActivityCompat;
->>>>>>> Stashed changes
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -127,11 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationRequest.setFastestInterval(120000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-<<<<<<< Updated upstream
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-=======
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
->>>>>>> Stashed changes
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -234,9 +226,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 }
-<<<<<<< Updated upstream
-/*
-=======
 
->>>>>>> Stashed changes
-*/
+
