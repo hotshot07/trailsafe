@@ -3,4 +3,5 @@
     <item name="input_search" type="id"></item>
     <item name="latTextView" type="id" />
     <item name="lonTextView" type="id" />
+    <item name="txtLocation" type="id" />
 </resources>
