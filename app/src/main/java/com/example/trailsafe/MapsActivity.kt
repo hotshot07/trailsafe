@@ -78,7 +78,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setMapLongClick(map)
         setPoiClick(map)
 
-        val test = 1
+        //val test = 1
     }
 
     private fun setMapLongClick(map:GoogleMap){

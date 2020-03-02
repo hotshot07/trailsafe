@@ -4,111 +4,134 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/homescreen_background">
 
     <EditText
         android:id="@+id/editText_FinishPoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="270dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:autofillHints=""
+        android:background="@drawable/input_field"
         android:ems="10"
-        android:fontFamily="monospace"
+        android:fontFamily="sans-serif"
         android:hint="@string/Finish_Point"
         android:inputType="textPersonName"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="190dp"
+        android:layout_width="270dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="164dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
         android:autofillHints=""
+        android:background="@drawable/input_field"
         android:ems="10"
-        android:fontFamily="monospace"
+        android:fontFamily="sans-serif"
         android:hint="@string/Start_Point"
         android:inputType="textPersonName"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="310dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/mode_of_transport"
-        android:inputType="textPersonName"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="715dp" />
 
     <Button
         android:id="@+id/NextButton"
-        android:layout_width="95dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="190dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:background="@color/green"
-        android:fontFamily="sans-serif-black"
+        android:layout_width="150dp"
+        android:layout_height="90dp"
+        android:background="@drawable/custom_start_button"
+        android:fontFamily="@font/noto_sans_bold"
         android:includeFontPadding="false"
-        android:text="@string/go"
-        android:textColor="@color/std_white"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/profile"
+        android:text="@string/start"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/Settings"
-        style="@style/Widget.AppCompat.Button.Small"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:fontFamily="sans-serif-black"
-        android:text="@string/settings"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="321dp"
-        android:layout_height="166dp"
-        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintVertical_bias="0.669" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="242dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/alegreya_sans_sc"
+        android:gravity="center"
+        android:text="@string/trailsafe"
+        android:textColor="@color/colorPrimaryDark"
+        android:textIsSelectable="false"
+        android:textSize="50sp"
+        app:autoSizeTextType="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="164dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/footblue_icon" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toStartOf="@+id/editText_FinishPoint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/footorange_icon" />
+
+    <ImageButton
+        android:id="@+id/Profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="50dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/profile_icon" />
+
+    <ImageButton
+        android:id="@+id/Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="50dp"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/settings_icon" />
+
+    <Spinner
+        android:id="@+id/transportMethod"
+        android:layout_width="150dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/input_spinner"
+        android:entries="@array/Spinner_transport"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_FinishPoint" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
