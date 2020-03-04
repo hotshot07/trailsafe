@@ -8,8 +8,10 @@
     <string name="profile">Profile</string>
     <string name="next">next</string>
     <string name="go">Go</string>
+    <string name="start">Start</string>
     <string name="Start_Point">Start Point</string>
     <string name="Finish_Point">End Point</string>
+    <string name="trailsafe">Trail Safe</string>
     <string name="congratulations">Congratulations!</string>
     <string name="you_have_arrived_on_time">You Have Arrived On Time</string>
     <string name="title_activity_maps">Map</string>
@@ -19,6 +21,11 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_recording_screen">recording_screen</string>
+    <string-array name="Spinner_transport">
+        <item>Walking</item>
+        <item>Jogging</item>
+        <item>Cycling</item>
+    </string-array>
 
     <string-array name="units">
         <item>M</item>

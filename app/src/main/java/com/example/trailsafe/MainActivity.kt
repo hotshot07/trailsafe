@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Button
+import android.widget.ImageButton
+import android.widget.Spinner
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,12 +24,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        var btn_settings = findViewById<Button>(R.id.Settings)
+        var btn_settings = findViewById<ImageButton>(R.id.Settings)
 
         btn_settings.setOnClickListener {
             val intent = Intent(this, Settings::class.java)
             startActivity(intent)
         }
+
 
 
     }
