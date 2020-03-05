@@ -1,16 +1,17 @@
 package com.example.trailsafe;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.app.Activity;
+//import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.BitmapDrawable;
+//import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,12 +22,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
+//import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
+//import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -40,12 +41,21 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+//import java.util.Locale;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+    private static final String TAG = "LocationsDocs";
 
     private GoogleMap mMap;
     static final int MY_LOCATION_REQUEST_CODE = 1000;
@@ -60,6 +70,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
 
     Button button;
+
+    // Initialize Database object
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +106,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    public void StoreLocation(Location location) {
+        //First tried to store a class object UserLocation
+        //file is in the project
+        //but it doesn't store has some errors
+
+
+        //creating a hashmap of latitude, longitude and current time
+        //then storing it in the database
+        Map<String, Object> locationType = new HashMap<>();
+
+        Map<String, Object> locationObject = new HashMap<>();
+
+        locationObject.put("Latitude", location.getLatitude());
+        locationObject.put("Longitude", location.getLongitude());
+
+        Date currentTime = Calendar.getInstance().getTime();
+
+        locationObject.put("Time", currentTime);
+
+        locationType.put("Starting Location", locationObject);
+
+        //ending location will also be pushed when available
+
+        //Since we have only one static Location, it saves as User 1 only
+        //Changing location and calling again will update the User 1 entry
+        //but not create a separate entry
+        db.collection("User Locations").document("User 2")
+                .set(locationType)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Location Successfully Saved");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error Writing Locations", e);
+                    }
+                });
+    }
 
     public void onMapSearch(View view) {
         EditText locationSearch = (EditText) findViewById(R.id.editText);
@@ -109,6 +163,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+
+            //search location update
+
+
+            //////////////////
             mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
@@ -151,6 +210,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("MapsActivity", "Location" + location.getLatitude()
                         + "" + location.getLongitude());
                 mLastLocation = location;
+
+                //call location storage function
+                StoreLocation(mLastLocation);
+
+
                 if(mMarker != null){
                     mMarker.remove();
                 }
