@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -38,6 +39,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,6 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private Marker destMarker;
     private Marker originMarker;
+    ArrayList<LatLng> listPoints;
 
 
     Button button;
@@ -92,7 +102,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Intent driveModeIntent = new Intent(getApplicationContext(),DriveMode.class);
                 startActivity(driveModeIntent);
             }
+
         });
+        listPoints = new ArrayList<>();
 
     }
 
@@ -199,6 +211,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
+        LatLng trinity = new LatLng(53.344059, -6.254567);
+        MarkerOptions markerOptions = new MarkerOptions().position(trinity)
+                .title("Origin")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+
+        LatLng ucd = new LatLng(53.307272, -6.220564);
+        MarkerOptions markerOptions1 = new MarkerOptions().position(ucd)
+                .title("Destination")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        mMap.addMarker(markerOptions);
+        mMap.addMarker(markerOptions1);
+        listPoints.add(trinity);
+        listPoints.add(ucd);
+
         //EditText locationSearch = (EditText) findViewById(R.id.editText);
         //String location = locationSearch.getText().toString();
         //List<Address> addressList = null;
@@ -216,9 +243,105 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }*/
+
+       mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+           @Override
+           public void onMapLongClick(LatLng latLng) {
+               if (listPoints.size() == 2){
+                   listPoints.clear();
+                   mMap.clear();
+               }
+               // Save First Point
+               listPoints.add(latLng);
+               MarkerOptions markerOptions2 = new MarkerOptions();
+               markerOptions2.position(latLng)
+                             .title("Origin");
+               if (listPoints.size() == 1){ // add first marker
+                   markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+               }else{//add second marker
+                   markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+               }
+               mMap.addMarker(markerOptions2);
+
+               if (listPoints.size()==2){
+                   String url = getRequestUrl(listPoints.get(0), listPoints.get(1));
+
+               }
+           }
+       });
     }
 
+    private String getRequestUrl(LatLng origin, LatLng destination) {
+        //String of origin
+        String str_org = "origin=" + origin.latitude + ","+origin.longitude;
+        //String of dest.
+        String str_dest = "destination=" + destination.latitude +","+destination.longitude;
+        //Set value to enable the sensor
+        String sensor = "sensor=false";
+        //Mode of transport
+        String mode = "mode=walking";
+        //Build the full param
+        String param = str_org + "&" + str_dest + "&" + sensor + "&" + mode;
+        //Output format
+        String output = "json";
+        //Create Url Request.
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?"
+                + param + "&key=" + R.string.google_maps_api_key;
+        return url;
+    }
 
+    private String requestDirections(String reqUrl) throws IOException {
+        String responseString = "";
+        InputStream inputStream = null;
+        HttpURLConnection httpURLConnection = null;
+        try{
+            URL url = new URL(reqUrl);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.connect();
+
+            //Get the response result
+            inputStream = httpURLConnection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuffer stringBuffer = new StringBuffer();
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line);
+            }
+            responseString = stringBuffer.toString();
+            bufferedReader.close();
+            inputStreamReader.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (inputStream != null){
+                inputStream.close();
+            }
+            httpURLConnection.disconnect();
+        }
+        return responseString;
+    }
+
+    public class TaskRequestDirections extends AsyncTask<String, Void, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            String responseString = "";
+            try{
+                responseString = requestDirections(strings[0]);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //Parse JSON here
+        }
+    }
 
     LocationCallback mLocationCallback = new LocationCallback(){
         @Override
