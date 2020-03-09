@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CountDown">
+
+    <TextView
+        android:id="@+id/text_view_countdown"
+        android:layout_width="227dp"
+        android:layout_height="113dp"
+        android:gravity="center"
+        android:text="00:00"
+        android:textSize="80sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <Button
+        android:id="@+id/add_time_button"
+        android:layout_width="151dp"
+        android:layout_height="64dp"
+        android:text="Add Time (+1 min)"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_stop_button"
+        app:layout_constraintVertical_bias="0.445" />
+
+    <Button
+        android:id="@+id/all_ok_button"
+        android:text="I am OK"
+        android:layout_width="131dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/add_time_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_stop_button" />
+
+    <Button
+        android:id="@+id/start_stop_button"
+        android:layout_width="145dp"
+        android:layout_height="74dp"
+        android:layout_marginBottom="204dp"
+        android:text="Start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_countdown"
+        app:layout_constraintVertical_bias="0.141" />
+
+    <TextView
+        android:layout_width="334dp"
+        android:layout_height="102dp"
+        android:text="Your journey has exceeded the allocated time. We will send for help if you do not inform us of your situation."
+        android:textSize="20sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_time_button" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

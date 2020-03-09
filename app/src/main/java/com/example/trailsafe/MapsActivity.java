@@ -1,19 +1,10 @@
 package com.example.trailsafe;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
-//import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-//import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +12,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-//import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.gms.common.api.GoogleApiClient;
-//import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -45,13 +38,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-//import java.util.Locale;
 import java.util.Map;
+
+//import android.app.Activity;
+//import android.graphics.drawable.BitmapDrawable;
+//import android.widget.SearchView;
+//import com.google.android.gms.common.api.Status;
+//import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -68,6 +65,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FusedLocationProviderClient mFusedLocationProviderClient;
     private TextView txtLocation;
     private GoogleApiClient mGoogleApiClient;
+    private Marker destMarker;
+    private Marker originMarker;
+
 
     Button button;
 
@@ -83,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        this.txtLocation = (TextView) findViewById(R.id.txtLocation);
+        //this.txtLocation = (TextView) findViewById(R.id.txtLocation);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         Button button = findViewById(R.id.DriveMode);
         button.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
     }
 
-    public void onMapSearch(View view) {
+   /* public void onMapSearch(View view) {
         EditText locationSearch = (EditText) findViewById(R.id.editText);
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;
@@ -171,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
-    }
+    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -198,7 +198,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mMap.setMyLocationEnabled(true);
         }
+
+        //EditText locationSearch = (EditText) findViewById(R.id.editText);
+        //String location = locationSearch.getText().toString();
+        //List<Address> addressList = null;
+
+       /* if (location != null || !location.equals("")) {
+            Geocoder geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Address address = addressList.get(0);
+            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        }*/
     }
+
+
 
     LocationCallback mLocationCallback = new LocationCallback(){
         @Override
@@ -249,9 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 //Prompt the user again after reasoning shown
                                 ActivityCompat.requestPermissions(MapsActivity.this,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},MY_LOCATION_REQUEST_CODE);
-
                             }
-
                         })
                         .create()
                         .show();

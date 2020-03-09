@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -13,6 +14,8 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,8 +29,11 @@ import org.w3c.dom.Text;
 import java.util.Formatter;
 import java.util.Locale;
 
+
+
 public class DriveMode extends AppCompatActivity implements LocationListener {
     TextView SpeedNumber;
+    private Button mTimerButton;
     @SuppressLint("MissingPermission")
     public void doSomethingElse() {
 
@@ -36,6 +42,16 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         Toast.makeText(this, "waiting for a GPS connection!", Toast.LENGTH_SHORT).show();
+
+        Button button = findViewById(R.id.Emergency);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Code here executes on main thread after user presses button
+                Intent countDownIntent = new Intent(getApplicationContext(),CountDown.class);
+                startActivity(countDownIntent);
+            }
+        });
+
     }
 
 

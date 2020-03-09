@@ -181,4 +181,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MovementView"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/Emergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/DistanceNumebr"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toEndOf="@+id/SpeedNumber"
+        app:layout_constraintTop_toBottomOf="@+id/ProfileView"
+        app:layout_constraintVertical_bias="0.557" />
 </androidx.constraintlayout.widget.ConstraintLayout>
