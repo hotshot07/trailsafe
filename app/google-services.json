@@ -1,0 +1,167 @@
+{
+  "project_info": {
+    "project_number": "1034060255659",
+    "firebase_url": "https://trailsafe-42bda.firebaseio.com",
+    "project_id": "trailsafe-42bda",
+    "storage_bucket": "trailsafe-42bda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034060255659:android:3a511e6c1e7c7a5b4f82ee",
+        "android_client_info": {
+          "package_name": "com.example.firestore_try1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034060255659-p93orl2hqr21vub7ho2cs39d5mv2sblu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firestore_try1",
+            "certificate_hash": "84e60032671a0acba8fddcbbd909ee35884c0066"
+          }
+        },
+        {
+          "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC07udhDhNy_fW6NxMdVs2GvTDVaxoBfBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034060255659:android:5b42999c7ff3bf2b4f82ee",
+        "android_client_info": {
+          "package_name": "com.example.maps2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034060255659-7csjb1hafmc737vr79u0f6l8jt53krgu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.maps2",
+            "certificate_hash": "84e60032671a0acba8fddcbbd909ee35884c0066"
+          }
+        },
+        {
+          "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC07udhDhNy_fW6NxMdVs2GvTDVaxoBfBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034060255659:android:cc3b1596ebfe43624f82ee",
+        "android_client_info": {
+          "package_name": "com.example.mapsproject1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034060255659-0hlubgks970fs0ckvabsmkevgbvtfvnm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mapsproject1",
+            "certificate_hash": "84e60032671a0acba8fddcbbd909ee35884c0066"
+          }
+        },
+        {
+          "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC07udhDhNy_fW6NxMdVs2GvTDVaxoBfBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034060255659:android:f19e30fb24f627464f82ee",
+        "android_client_info": {
+          "package_name": "com.example.trailsafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034060255659-34m43e8prq20uc0g8kt74nqnqk9t9eeo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trailsafe",
+            "certificate_hash": "a67790d853e5f47644a79585dd3c3a027e31a7bf"
+          }
+        },
+        {
+          "client_id": "1034060255659-6pqdpvfos0qcpv52j0452gvtgskueqsg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trailsafe",
+            "certificate_hash": "84e60032671a0acba8fddcbbd909ee35884c0066"
+          }
+        },
+        {
+          "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC07udhDhNy_fW6NxMdVs2GvTDVaxoBfBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1034060255659-72nr2junic8kcjdqpukk0o88p0papnq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
