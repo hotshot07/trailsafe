@@ -21,6 +21,10 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_recording_screen">recording_screen</string>
+    <string name="email_login">Email</string>
+    <string name="password_login">Password</string>
+    <string name="sign_in_login">Sign In</string>
+    <string name="sign_out">Sign Out</string>
     <string-array name="Spinner_transport">
         <item>Walking</item>
         <item>Jogging</item>
