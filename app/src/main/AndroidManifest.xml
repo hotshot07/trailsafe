@@ -7,9 +7,9 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_SERVICE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.hardware.location.gps"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Timer"></activity>
+        <activity android:name=".activity_login"></activity>
+        <activity android:name=".Timer" />
         <activity android:name=".DriveMode" />
         <activity android:name=".CountDown"/>
         <!--
@@ -46,16 +47,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".LaunchScreen">
-        </activity>
-
+            android:parentActivityName=".LaunchScreen"></activity>
         <activity
             android:name=".Settings"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
