@@ -49,6 +49,7 @@ import com.google.maps.PendingResult;
 import com.google.maps.internal.PolylineEncoding;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
+import com.google.maps.model.TravelMode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -149,6 +150,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
 
         directions.alternatives(true);
+        directions.mode(TravelMode.BICYCLING);
         directions.origin(
                 new com.google.maps.model.LatLng(
                         originMarker.getPosition().latitude,
