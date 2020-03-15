@@ -45,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     toastMessage("Successfully signed in with: " + user.getEmail());
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
 
                 else {
@@ -61,10 +63,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                //SIGN IN BUTTON WORKS REGARDLESS TO GET TO MAIN ACTIVITY PAGE
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                //DELETE UPPER 2 LINES IF YOU WANT TO REMOVE EVERYONE SIGNING IN
                 if(!email.equals("") || !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email,pass);
                 }else{
