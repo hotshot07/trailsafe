@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = mEmail.getText().toString();
                 String pass = mPassword.getText().toString();
-                if(!email.equals("") || !pass.equals("")){
+                if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email,pass);
                 }else{
                     toastMessage("You didn't fill in all the fields.");
