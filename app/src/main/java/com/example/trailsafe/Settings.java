@@ -29,7 +29,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        init();
+        //init();
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
