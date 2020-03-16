@@ -8,7 +8,7 @@
     android:background="@drawable/homescreen_background">
 
     <EditText
-        android:id="@+id/editText_FinishPoint"
+        android:id="@+id/finish_point"
         android:layout_width="270dp"
         android:layout_height="44dp"
         android:layout_marginTop="24dp"
@@ -22,10 +22,10 @@
         android:inputType="textPersonName"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/start_point" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/start_point"
         android:layout_width="270dp"
         android:layout_height="44dp"
         android:layout_marginTop="164dp"
@@ -82,7 +82,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="164dp"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/start_point"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/footblue_icon" />
@@ -94,7 +94,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/editText_FinishPoint"
+        app:layout_constraintEnd_toStartOf="@+id/finish_point"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:srcCompat="@drawable/footorange_icon" />
@@ -134,7 +134,7 @@
         android:entries="@array/Spinner_transport"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_FinishPoint" />
+        app:layout_constraintTop_toBottomOf="@+id/finish_point" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
