@@ -18,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity_login"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:parentActivityName=".LaunchScreen">
+        </activity>
         <activity android:name=".Timer" />
         <activity android:name=".DriveMode" />
         <activity android:name=".CountDown"/>

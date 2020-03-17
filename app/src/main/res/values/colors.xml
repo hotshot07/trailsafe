@@ -6,4 +6,5 @@
     <color name="std_white">#FFFFFF</color>
     <color name="green">#4DA23A</color>
     <color name="lightGrey">#707070</color>
+    <color name="lighterGrey">#E4E4E4</color>
 </resources>

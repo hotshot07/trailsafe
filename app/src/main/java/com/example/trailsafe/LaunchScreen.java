@@ -22,7 +22,7 @@ public class LaunchScreen extends AppCompatActivity {
                     double loadtime = minimum + (int) (Math.random() * maximum);
                     loadtime += 1000;
                     sleep((long) loadtime);
-                    Intent intent = new Intent(LaunchScreen.this, MainActivity.class);
+                    Intent intent = new Intent(LaunchScreen.this, LoginActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (InterruptedException e) {
