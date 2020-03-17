@@ -34,9 +34,6 @@ public class LaunchScreen extends AppCompatActivity {
             }
 
         };
-
-
-
         myThread.start();
     }
 

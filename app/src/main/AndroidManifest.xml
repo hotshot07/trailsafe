@@ -25,6 +25,7 @@
         <activity android:name=".Timer" />
         <activity android:name=".DriveMode" />
         <activity android:name=".CountDown"/>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
