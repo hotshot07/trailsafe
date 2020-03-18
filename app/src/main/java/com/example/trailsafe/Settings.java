@@ -18,8 +18,8 @@ public class Settings extends AppCompatActivity {
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent sOut = new Intent(Settings.this,LoginActivity.class);
-                startActivity(sOut);
+                    Intent sOut = new Intent(Settings.this,LoginActivity.class);
+                    startActivity(sOut);
             }
         });
     }
