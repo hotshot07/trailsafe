@@ -2,4 +2,6 @@
 <resources>
     <item name="input_search" type="id"></item>
     <item name="txtLocation" type="id" />
+    <item name="webView" type="id" />
+    <item name="editText2" type="id" />
 </resources>
