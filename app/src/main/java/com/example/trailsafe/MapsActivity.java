@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -84,8 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int  REQUEST_LOCATION_PERMISSION = 1;
 
     private Location mLastLocation;
-    private Location origin;
-    private Location destination;
+
     private Marker mMarker = null;
     private LocationRequest mLocationRequest;
     private GeoApiContext mGeoApiContext = null;
@@ -98,6 +99,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker originMarker;
     ArrayList<LatLng> listPoints;
     ArrayList markerPoints = new ArrayList();
+    LatLng origin;
+    LatLng destination;
+    double defaultValue = 0.0;
+    private long duration;
 
 
     Button button;
@@ -113,6 +118,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //retrieve the origin as a string from previous activity
+        Intent recieve = getIntent();
+        double originLat = recieve.getDoubleExtra("OriginLat", defaultValue);
+        double originLng = recieve.getDoubleExtra("OriginLong", defaultValue);
+        double destLat = recieve.getDoubleExtra("DestLat", defaultValue);
+        double destLng = recieve.getDoubleExtra("DestLong", defaultValue);
+
+        origin = new LatLng(originLat,originLng);
+        destination = new LatLng(destLat, destLng);
+
+
+
+
 
         //this.txtLocation = (TextView) findViewById(R.id.txtLocation);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -140,12 +159,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void calculateDirections(Marker marker){
+    private void calculateDirections(){
         Log.d(TAG, "calculateDirections: calculating directions.");
 
         com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
-                marker.getPosition().latitude,
-                marker.getPosition().longitude
+                destMarker.getPosition().latitude,
+                destMarker.getPosition().longitude
         );
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
 
@@ -165,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
                 Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
                 Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
-
+                duration = (result.routes[0].legs[0].duration.inSeconds)/60;
                 addPolylinesToMap(result);
             }
 
@@ -311,44 +330,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
-        LatLng trinity = new LatLng(53.344059, -6.254567);
-        MarkerOptions markerOptions = new MarkerOptions().position(trinity)
-                .title("Origin")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+            MarkerOptions markerOptions = new MarkerOptions().position(origin).title("Start").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+            originMarker = mMap.addMarker(markerOptions);
+
+            markerOptions = new MarkerOptions().position(destination).title("End").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            destMarker = mMap.addMarker(markerOptions);
+            listPoints.add(origin);
+            listPoints.add(destination);
 
 
-        LatLng ucd = new LatLng(53.307272, -6.220564);
-        MarkerOptions markerOptions1 = new MarkerOptions().position(ucd)
-                .title("Destination")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        originMarker = mMap.addMarker(markerOptions);
-        destMarker = mMap.addMarker(markerOptions1);
-        listPoints.add(trinity);
-        listPoints.add(ucd);
+            markerPoints.add(origin);
+            markerPoints.add(destination);
 
-        markerPoints.add(trinity);
-        markerPoints.add(ucd);
-
-        calculateDirections(destMarker);
+            calculateDirections();
 
 
-        //EditText locationSearch = (EditText) findViewById(R.id.editText);
-        //String location = locationSearch.getText().toString();
-        //List<Address> addressList = null;
 
-       /* if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        }*/
+
 
        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
            @Override
