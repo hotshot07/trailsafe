@@ -1,6 +1,6 @@
 <resources>
     <string name="google_maps_api_key">AIzaSyA1HWwA18lCOsv5dMqWlf67MF1Xrxe2tMs</string>
-    <string name="app_name">Home Page</string>
+    <string name="app_name">TrailSafe</string>
     <string name="destination">Destination</string>
     <string name="mode_of_transport">Mode of Transport</string>
     <string name="nameoftheapp">Trail Safe</string>
