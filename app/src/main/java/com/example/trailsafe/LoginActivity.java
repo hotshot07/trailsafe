@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // UI references.
     private EditText mEmail, mPassword;
-    private Button btnSignIn;
+    private Button btnSignIn, btnSignOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.login_email);
         mPassword = (EditText) findViewById(R.id.login_password);
         btnSignIn = (Button) findViewById(R.id.button_login);
+        btnSignOut = (Button) findViewById(R.id.button_login_out);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -45,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     toastMessage("Successfully signed in with: " + user.getEmail());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
 
@@ -66,13 +66,23 @@ public class LoginActivity extends AppCompatActivity {
                 String pass = mPassword.getText().toString();
                 if(!email.equals("") && !pass.equals("")){
                     mAuth.signInWithEmailAndPassword(email,pass);
-                    toastMessage("Signing in...");
                 }else{
                     toastMessage("You didn't fill in all the fields.");
                 }
             }
         });
 
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                mAuth.signOut();
+                toastMessage("Signing Out...");
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
 
 
     }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Settings extends AppCompatActivity {
     private FirebaseAuth mAuth;
     public Button signOutButton;
-    public ImageButton backButton;
 
     public void init() {
 
@@ -39,14 +37,6 @@ public class Settings extends AppCompatActivity {
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
         mySpinner2.setAdapter(myAdapter2);
-
-        backButton = (ImageButton)findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Settings.super.finish();
-            }
-        });
 
 
 

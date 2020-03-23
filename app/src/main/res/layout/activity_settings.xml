@@ -168,8 +168,6 @@
         android:background="@drawable/input_phone"
         android:ems="10"
         android:inputType="phone"
-        android:text="+353"
-        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -210,16 +208,5 @@
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/about" />
-
-    <ImageButton
-        android:id="@+id/back_button"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="26dp"
-        android:background="@drawable/ic_arrow_back_black_24dp"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
