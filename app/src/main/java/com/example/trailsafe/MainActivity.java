@@ -103,12 +103,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btn_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-
-
-
 }
+
+
+
+
+
+
 
 
 
