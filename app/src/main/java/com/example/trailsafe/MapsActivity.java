@@ -10,6 +10,7 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -102,6 +103,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Button button;
 
+    // Timer to change screen functionality
+    private long routeDuration;
+    private CountDownTimer mCountDownTimer;
+    private boolean mTimerBoolean;
+    private long mTimeLeftMillis = 10000;
+
     // Initialize Database object
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -140,6 +147,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    private void startTimer(){
+        mCountDownTimer = new CountDownTimer(mTimeLeftMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                mTimeLeftMillis = millisUntilFinished;
+            }
+
+            @Override
+            public void onFinish() {
+                // Add the move functionality.
+                ;
+            }
+        }.start();
+
+        mTimerBoolean = true;
+    }
     private void calculateDirections(Marker marker){
         Log.d(TAG, "calculateDirections: calculating directions.");
 
@@ -166,6 +189,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
                 Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
 
+                // Start timer.
+                routeDuration = result.routes[0].legs[0].duration.inSeconds;
+                mTimeLeftMillis = routeDuration;
+                startTimer();
                 addPolylinesToMap(result);
             }
 
