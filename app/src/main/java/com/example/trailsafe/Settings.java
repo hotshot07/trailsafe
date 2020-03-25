@@ -36,10 +36,9 @@ public class Settings extends AppCompatActivity {
     public ImageButton backButton;
     public EditText phoneNumber;
 
-    Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
-    Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+    public Spinner mySpinner, mySpinner2;
 
-    String[] additionalData = new String[2];
+    public String[] additionalData;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -52,6 +51,10 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        mySpinner = (Spinner) findViewById(R.id.spinner1);
+        mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+
+        additionalData = new String[2];
         //init();
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
@@ -148,7 +151,7 @@ public class Settings extends AppCompatActivity {
 //                });
 
                 //call storing function
-                storeSettingData(additionalData);
+                storeSettingData();
             }
         });
 
@@ -156,7 +159,7 @@ public class Settings extends AppCompatActivity {
     }
 
 
-        public void storeSettingData(String[] datal) {
+        public void storeSettingData() {
             phoneNumber = (EditText)findViewById(R.id.emergeny_contact);
             String value = phoneNumber.getText().toString();
 
@@ -164,9 +167,9 @@ public class Settings extends AppCompatActivity {
 
             Map<String, Object> settingObject = new HashMap<>();
 
-            settingObject.put("Distance Units", datal[0]);
+            settingObject.put("Distance Units", additionalData[0]);
 
-            settingObject.put("Timer Length (minutes)", datal[1]);
+            settingObject.put("Timer Length (minutes)", additionalData[1]);
 
             settingObject.put("Emergency Contact Number", value);
 
