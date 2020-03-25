@@ -45,6 +45,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Settings.super.finish();
+                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
             }
         });
 
