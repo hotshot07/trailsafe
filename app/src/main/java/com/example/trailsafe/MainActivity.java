@@ -72,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
                 if(target_op == Target_Move){
                     Intent intent = new Intent(MainActivity.this, Settings.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
             }
 
