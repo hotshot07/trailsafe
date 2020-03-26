@@ -57,9 +57,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btn_next = (Button) findViewById(R.id.NextButton);
         btn_profile = (ImageButton) findViewById(R.id.Profile);
-        if(! Places.isInitialized()){
+
+        if(!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
         }
+        PlacesClient placesClient = Places.createClient(this);
+
 
 
         // Initialize the AutocompleteSupportFragments.
@@ -75,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                //Toast.makeText(getApplicationContext(), place.getName().toString(),Toast.LENGTH_LONG).show();
+               // Log.i(TAG, "Latlng: " + place.getLatLng().toString());
                 Geocoder geocoder = new Geocoder(getApplicationContext());
                 try {
-                    addressList = geocoder.getFromLocationName(place.getName().toString(), 1);
+                    addressList = geocoder.getFromLocationName(place.getName(), 1);
 
                 } catch (IOException e) {
                     e.printStackTrace();
