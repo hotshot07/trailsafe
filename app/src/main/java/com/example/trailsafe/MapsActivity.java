@@ -243,6 +243,8 @@ GoogleMap.OnPolylineClickListener{
                     polyline.setClickable(true);
                     mPolyLinesData.add(new PolylineData(polyline,route.legs[0]));
 
+                    onPolylineClick(polyline);
+
                 }
             }
         });
@@ -438,12 +440,28 @@ GoogleMap.OnPolylineClickListener{
 
     @Override
     public void onPolylineClick(Polyline polyline) {
+        int index = 0;
         for(PolylineData polylineData: mPolyLinesData){
+            index++;
             Log.d(TAG, "onPolylineClick: toString: " + polylineData.toString());
             if(polyline.getId().equals(polylineData.getPolyline().getId())){
                 polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
                 polylineData.getPolyline().setZIndex(1);
+
+                LatLng endLocation = new LatLng(
+                        polylineData.getLeg().endLocation.lat,
+                        polylineData.getLeg().endLocation.lng
+                );
+
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(endLocation)
+                        .title("Trip #: " + index)
+                        .snippet("Duration: " + polylineData.getLeg().duration)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                destMarker = mMap.addMarker(markerOptions);
+                destMarker.showInfoWindow();
             }
+
             else{
                 polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.lightGrey));
                 polylineData.getPolyline().setZIndex(0);
