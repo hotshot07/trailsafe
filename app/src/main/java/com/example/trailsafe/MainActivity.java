@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     EditText finishPoint;
     EditText startPoint;
     List<Address> addressList = null;
+    String startLocString = null;
+    String destLocString = null;
 
 
     // Create a new Places client instance.
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.start_autocomplete_fragment);
 
     // Specify the types of place data to return.
-        startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
     // Set up a PlaceSelectionListener to handle the response.
         startAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -78,17 +80,13 @@ public class MainActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-               // Log.i(TAG, "Latlng: " + place.getLatLng().toString());
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                try {
-                    addressList = geocoder.getFromLocationName(place.getName(), 1);
+                startLocString = place.getName();
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Address address = addressList.get(0);
-                com.google.android.gms.maps.model.LatLng latLng = new com.google.android.gms.maps.model.LatLng(address.getLatitude(), address.getLongitude());
-                startLatLng = new LatLng(latLng.latitude,latLng.longitude);
+                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
+
+                Toast.makeText(getApplicationContext(),startLocString,Toast.LENGTH_LONG);
+
+                startLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
             }
 
             @Override
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().findFragmentById(R.id.finish_autocomplete_fragment);
 
         // Specify the types of place data to return.
-        finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         finishAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -113,17 +111,13 @@ public class MainActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                Toast.makeText(getApplicationContext(), place.getName().toString(),Toast.LENGTH_LONG).show();
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                try {
-                    addressList = geocoder.getFromLocationName(place.getName().toString(), 1);
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Address address = addressList.get(0);
-                com.google.android.gms.maps.model.LatLng latLng = new com.google.android.gms.maps.model.LatLng(address.getLatitude(), address.getLongitude());
-                finishLatLng = new LatLng(latLng.latitude,latLng.longitude);
+                destLocString = place.getName();
+                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
+                finishLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
+
+
+
             }
 
             @Override
@@ -148,10 +142,12 @@ public class MainActivity extends AppCompatActivity {
                 //check if the input is valid
                 if (startLatLng != null && finishLatLng != null) {
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                    intent.putExtra("OriginName", startLocString);
                     intent.putExtra("OriginLat", startLatLng.lat);
-                    intent.putExtra("OriginLong", startLatLng.lng);
+                    intent.putExtra("OriginLng", startLatLng.lng);
+                    intent.putExtra("DestString", destLocString);
                     intent.putExtra("DestLat", finishLatLng.lat);
-                    intent.putExtra("DestLong", finishLatLng.lng);
+                    intent.putExtra("DestLng", finishLatLng.lng);
                     startActivity(intent);
                 }
                 else{

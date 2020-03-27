@@ -45,14 +45,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <fragment android:id="@+id/start_autocomplete_fragment"
+    <fragment
+        android:id="@+id/start_autocomplete_fragment"
 
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="270dp"
         android:layout_height="44dp"
         android:layout_marginTop="164dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="44dp"
         android:autofillHints=""
         android:background="@drawable/input_greyfield"
         android:ems="10"
@@ -63,8 +62,8 @@
         android:textSize="20sp"
 
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
 
@@ -72,12 +71,13 @@
         android:layout_width="113dp"
         android:layout_height="27dp"
         android:background="@drawable/input_field"
+        android:ems="10"
         android:fontFamily="@font/alegreya_sans_sc"
         android:text="Starting Point"
-        android:textSize="15sp"
-        android:ems="10"
         android:textAlignment="viewStart"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/start_autocomplete_fragment"
+        app:layout_constraintEnd_toEndOf="@+id/start_autocomplete_fragment"
         app:layout_constraintStart_toStartOf="@+id/start_autocomplete_fragment">
 
 
@@ -89,7 +89,6 @@
         android:layout_width="270dp"
         android:layout_height="44dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="44dp"
         android:autofillHints=""
         android:background="@drawable/input_field"
         android:ems="10"
@@ -98,6 +97,7 @@
         android:inputType="textPersonName"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_autocomplete_fragment" />
 
     <TextView
@@ -106,12 +106,13 @@
         android:layout_width="113dp"
         android:layout_height="27dp"
         android:background="@drawable/input_field"
+        android:ems="10"
         android:fontFamily="@font/alegreya_sans_sc"
         android:text="Ending Point"
-        android:textSize="15sp"
-        android:ems="10"
         android:textAlignment="viewStart"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/finish_autocomplete_fragment"
+        app:layout_constraintEnd_toEndOf="@+id/finish_autocomplete_fragment"
         app:layout_constraintStart_toStartOf="@+id/finish_autocomplete_fragment">
 
 

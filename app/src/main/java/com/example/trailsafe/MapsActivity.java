@@ -34,12 +34,14 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -51,6 +53,7 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.internal.PolylineEncoding;
+import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
@@ -100,8 +103,10 @@ GoogleMap.OnPolylineClickListener{
     private GoogleApiClient mGoogleApiClient;
     private Marker destMarker;
     private Marker originMarker;
+    List<Address> addressList = null;
     ArrayList<LatLng> listPoints;
     ArrayList markerPoints = new ArrayList();
+    ArrayList<Marker> markers = new ArrayList<>();
     LatLng origin;
     LatLng destination;
     double defaultValue = 0.0;
@@ -109,6 +114,12 @@ GoogleMap.OnPolylineClickListener{
     private String durString;
     TextView durationDisplay;
     private ArrayList<PolylineData> mPolyLinesData = new ArrayList<>();
+    private String originString;
+    private String destString;
+    private double originLat;
+    private double originLng;
+    private double destLat, destLng;
+    private LatLngBounds bounds;
 
 
     Button button;
@@ -126,14 +137,22 @@ GoogleMap.OnPolylineClickListener{
         mapFragment.getMapAsync(this);
 
         //retrieve the origin as a string from previous activity
-        Intent recieve = getIntent();
-        double originLat = recieve.getDoubleExtra("OriginLat", defaultValue);
-        double originLng = recieve.getDoubleExtra("OriginLong", defaultValue);
-        double destLat = recieve.getDoubleExtra("DestLat", defaultValue);
-        double destLng = recieve.getDoubleExtra("DestLong", defaultValue);
+        Intent receive = getIntent();
+        originString = receive.getStringExtra("OriginString");
+        destString = receive.getStringExtra("DestString");
+
+        originLat = receive.getDoubleExtra("OriginLat",defaultValue);
+        originLng = receive.getDoubleExtra("OriginLng",defaultValue);
+        destLat = receive.getDoubleExtra("DestLat", defaultValue);
+        destLng = receive.getDoubleExtra("DestLng",defaultValue);
+
+
 
         origin = new LatLng(originLat,originLng);
         destination = new LatLng(destLat, destLng);
+
+        //bounds = new LatLngBounds(origin,destination);
+
 
 
 
@@ -333,9 +352,11 @@ GoogleMap.OnPolylineClickListener{
 
         MarkerOptions markerOptions = new MarkerOptions().position(origin).title("Start").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         originMarker = mMap.addMarker(markerOptions);
+        markers.add(originMarker);
 
         markerOptions = new MarkerOptions().position(destination).title("End").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         destMarker = mMap.addMarker(markerOptions);
+        markers.add(destMarker);
         listPoints.add(origin);
         listPoints.add(destination);
 
@@ -343,7 +364,18 @@ GoogleMap.OnPolylineClickListener{
         markerPoints.add(origin);
         markerPoints.add(destination);
 
+
+
         calculateDirections();
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(origin);
+        builder.include(destination);
+        LatLngBounds bounds = builder.build();
+
+        int padding = 100; // offset from edges of the map in pixels
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+        googleMap.moveCamera(cu);
 
 
 
@@ -380,7 +412,7 @@ GoogleMap.OnPolylineClickListener{
                 mMarker = mMap.addMarker((markerOptions));
 
                 //move camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
             }
         }
     };
