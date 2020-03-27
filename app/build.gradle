@@ -44,5 +44,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.maps:google-maps-services:0.2.11'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'com.marozzi.segmentedtab:segmented-tab:1.0.2'
 
 }

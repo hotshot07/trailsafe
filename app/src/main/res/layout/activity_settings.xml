@@ -20,18 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/pref1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/distance_units"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+
 
     <TextView
         android:id="@+id/pref_title"
@@ -82,12 +71,25 @@
         android:id="@+id/view3"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="50dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emergeny_contact" />
+
+    <TextView
+        android:id="@+id/pref1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/mode_of_transport"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <TextView
         android:id="@+id/textView4"
@@ -102,16 +104,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pref1" />
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="Distance Units "
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
     <Spinner
         android:id="@+id/spinner1"
         style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:layout_width="120dp"
         android:layout_height="35dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="54dp"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginTop="15dp"
+        android:popupBackground="#CED5F7"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view" />
+
 
     <Spinner
         android:id="@+id/spinner2"
@@ -119,10 +136,22 @@
         android:layout_width="120dp"
         android:layout_height="35dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="54dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        style="@android:style/Widget.DeviceDefault.Light.Spinner"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+        app:layout_constraintHorizontal_bias="0.79"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
     <Button
         android:id="@+id/sign_out_btn"
@@ -142,7 +171,7 @@
         android:id="@+id/view"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="130dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -153,7 +182,7 @@
         android:id="@+id/view2"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -221,6 +250,10 @@
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

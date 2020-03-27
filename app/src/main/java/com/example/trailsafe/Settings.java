@@ -31,14 +31,19 @@ public class Settings extends AppCompatActivity {
 
         Spinner mySpinner = (Spinner) findViewById(R.id.spinner1);
         Spinner mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+        Spinner mySpinner3 = (Spinner) findViewById(R.id.spinner3);
+
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
-                            android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.units));
+                            android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Spinner_transport));
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(Settings.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.timer_length));
+        ArrayAdapter<String> myAdapter3 = new ArrayAdapter<String>(Settings.this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.units));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mySpinner.setAdapter(myAdapter);
         mySpinner2.setAdapter(myAdapter2);
+        mySpinner3.setAdapter(myAdapter3);
 
         backButton = (ImageButton)findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
