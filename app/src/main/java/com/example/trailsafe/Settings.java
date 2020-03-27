@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,14 +21,23 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Settings extends AppCompatActivity {
 
-    private static final String TAG = "SettingDocs";
+    private static final String TAG = "SettingDoc";
+    private static final String filename = "settingsFile";
 
     private FirebaseAuth mAuth;
     public Button signOutButton;
@@ -42,6 +51,7 @@ public class Settings extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
 //    public void init() {
 //
 //    }
@@ -51,13 +61,24 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
+        //try to create a cache file
+//        try {
+//            File.createTempFile(filename, null, getCacheDir());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        File cacheFile = new File(getCacheDir(), filename);
+
+
         mySpinner = (Spinner) findViewById(R.id.spinner1);
         mySpinner2 = (Spinner) findViewById(R.id.spinner2);
 
         additionalData = new String[2];
         //init();
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
+        final ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
                             android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.units));
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(Settings.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.timer_length));
@@ -94,6 +115,19 @@ public class Settings extends AppCompatActivity {
         });
 
 
+        //now read from local cache and make spinner according to that
+        String value = load();
+//        int pos = selectSpinnerItemByValue(mySpinner, value);
+
+//        mySpinner.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mySpinner.setSelection(pos);
+//            }
+//        });
+
+        setSavedItem(mySpinner, 1);
+
         backButton = (ImageButton)findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +136,19 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+
+
+//        public void customObjects() {
+//            // [START custom_objects]
+//            DocumentReference docRef = db.collection("cities").document("BJ");
+//            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                @Override
+//                public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                    City city = documentSnapshot.toObject(City.class);
+//                }
+//            });
+//            // [END custom_objects]
+//        }
 
 
         signOutButton = (Button) findViewById(R.id.sign_out_btn);
@@ -123,43 +170,149 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 // Do something in response to button click
 
-//                final String[] additionalData = new String[2];
-
-//                mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        additionalData[0] = mySpinner.getSelectedItem().toString();
-////                        toastMessage(additionalData[0]);
-//                    }
 //
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-
-//                mySpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                        additionalData[1] = mySpinner2.getSelectedItem().toString();
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> parent) {
-//
-//                    }
-//                });
-
                 //call storing function
                 storeSettingData();
+                save(additionalData);
             }
         });
 
 
     }
 
+    private void setSavedItem(final Spinner mySpinner, final int pos) {
+        mySpinner.post(new Runnable() {
+            @Override
+            public void run() {
+                mySpinner.setSelection(pos);
+            }
+        });
+    }
 
-        public void storeSettingData() {
+    public static int selectSpinnerItemByValue(Spinner spnr, String value) {
+        SimpleCursorAdapter adapter = (SimpleCursorAdapter) spnr.getAdapter();
+        for (int position = 0; position < adapter.getCount(); position++) {
+            if(value.equals(spnr.getItemAtPosition(position))) {
+
+//                final int finalPosition = position;
+//                spnr.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        spnr.setSelection(finalPosition);
+//                    }
+//                });
+
+                return position;
+            }
+        }
+//        toastMessage("No item found");
+        return -1;
+    }
+
+    private String load() {
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput(filename);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+            return(sb.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private void save(String data[]) {
+
+        String preferences = data[0];
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(filename, MODE_PRIVATE);
+            fos.write(preferences.getBytes());
+
+            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + filename,
+                    Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public class settingsClass {
+        private String emergencyNumber;
+        private String distanceUnits;
+        private String timerLength;
+
+        public settingsClass() { }
+
+        public settingsClass(String emergencyNumber, String distanceUnits, String timerLength) {
+            this.emergencyNumber = emergencyNumber;
+            this.distanceUnits = distanceUnits;
+            this.timerLength = timerLength;
+        }
+
+        public String getEmergencyNumber() {
+            return emergencyNumber;
+        }
+
+        public void setEmergencyNumber(String emergencyNumber) {
+            this.emergencyNumber = emergencyNumber;
+        }
+
+        public String getDistanceUnits() {
+            return distanceUnits;
+        }
+
+        public void setDistanceUnits(String distanceUnits) {
+            this.distanceUnits = distanceUnits;
+        }
+
+        public String getTimerLength() {
+            return timerLength;
+        }
+
+        public void setTimerLength(String timerLength) {
+            this.timerLength = timerLength;
+        }
+    }
+
+    private void readSettings() {
+
+    }
+
+
+    public void storeSettingData() {
             phoneNumber = (EditText)findViewById(R.id.emergeny_contact);
             String value = phoneNumber.getText().toString();
 
@@ -167,9 +320,9 @@ public class Settings extends AppCompatActivity {
 
             Map<String, Object> settingObject = new HashMap<>();
 
-            settingObject.put("Distance Units", additionalData[0]);
-
-            settingObject.put("Timer Length (minutes)", additionalData[1]);
+//            settingObject.put("Distance Units", additionalData[0]);
+//
+//            settingObject.put("Timer Length (minutes)", additionalData[1]);
 
             settingObject.put("Emergency Contact Number", value);
 
