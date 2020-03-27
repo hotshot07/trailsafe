@@ -87,7 +87,7 @@ import java.util.concurrent.TimeUnit;
 //import com.google.android.gms.common.api.Status;
 //import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
 GoogleMap.OnPolylineClickListener{
 
     private static final String TAG = "LocationsDocs";
@@ -97,8 +97,7 @@ GoogleMap.OnPolylineClickListener{
     private int  REQUEST_LOCATION_PERMISSION = 1;
 
     private Location mLastLocation;
-    private Location origin;
-    private Location destination;
+
     private Marker mMarker = null;
     private LocationRequest mLocationRequest;
     private GeoApiContext mGeoApiContext = null;
@@ -192,7 +191,7 @@ GoogleMap.OnPolylineClickListener{
         }
 
 
-        durationDisplay = (TextView) findViewById(R.id.duration_disp);
+
 
 
 
@@ -385,7 +384,7 @@ GoogleMap.OnPolylineClickListener{
         builder.include(destination);
         LatLngBounds bounds = builder.build();
 
-        int padding = 100; // offset from edges of the map in pixels
+        int padding = 200; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         googleMap.moveCamera(cu);
 

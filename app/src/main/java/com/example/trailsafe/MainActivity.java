@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 
             }};
 
-}
+
 
     public void TapToBlink(View view) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide);
