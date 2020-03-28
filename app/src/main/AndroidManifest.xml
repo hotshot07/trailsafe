@@ -59,6 +59,7 @@
         <activity
             android:name=".Settings"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".register" />
     </application>
 
 </manifest>
