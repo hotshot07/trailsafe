@@ -2,10 +2,14 @@ package com.example.trailsafe;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -44,6 +48,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -361,11 +366,17 @@ GoogleMap.OnPolylineClickListener{
         }
 
 
-        MarkerOptions markerOptions = new MarkerOptions().position(origin).title("Start").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        MarkerOptions markerOptions = new MarkerOptions()
+                                    .position(origin)
+                                    .title("Start")
+                                    .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footorange_icon));
         originMarker = mMap.addMarker(markerOptions);
         markers.add(originMarker);
 
-        markerOptions = new MarkerOptions().position(destination).title("End").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        markerOptions = new MarkerOptions()
+                .position(destination)
+                .title("End")
+                .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
         destMarker = mMap.addMarker(markerOptions);
         markers.add(destMarker);
         listPoints.add(origin);
@@ -410,17 +421,11 @@ GoogleMap.OnPolylineClickListener{
                 StoreLocation(mLastLocation);
 
 
-                if(mMarker != null){
-                    mMarker.remove();
-                }
+
 
                 //Place Marker at current location
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("You Are Here");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                mMarker = mMap.addMarker((markerOptions));
+
 
                 //move camera
                 //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
@@ -544,7 +549,7 @@ GoogleMap.OnPolylineClickListener{
                         .position(endLocation)
                         .title("Trip #: " + index)
                         .snippet("Duration: " + polylineData.getLeg().duration)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                        .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
                 destMarker = mMap.addMarker(markerOptions);
                 destMarker.showInfoWindow();
             }
@@ -554,6 +559,14 @@ GoogleMap.OnPolylineClickListener{
                 polylineData.getPolyline().setZIndex(0);
             }
         }
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
 
