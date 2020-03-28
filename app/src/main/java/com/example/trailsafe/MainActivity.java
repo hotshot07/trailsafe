@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     static String KEY_ANIM = "TARGET_ANIM";
     static String Target_Move = "Translate";
+    static String profileTarget_move = "Rotate Profile button";
     static String Target_Rotate = "Rotate";
     String target_op = Target_Move;
     private static final String TAG = "LocationsDocs";
@@ -88,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
                 arg0.startAnimation(rotate);
             }
         });
+
+        btn_profile.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                target_op = profileTarget_move;
+                arg0.startAnimation(move);
+            }
+        });
+
 
         if(!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
@@ -193,6 +203,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(target_op == Target_Move){
                     Intent intent = new Intent(MainActivity.this, Settings.class);
+                    intent.putExtra(KEY_ANIM, target_op);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                }
+                if(target_op == profileTarget_move){
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
