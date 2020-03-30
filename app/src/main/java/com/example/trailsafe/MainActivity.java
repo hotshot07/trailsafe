@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Specify the types of place data to return.
         startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        startAutocompleteFragment.setHint("Start Point");
 
         // Set up a PlaceSelectionListener to handle the response.
         startAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Specify the types of place data to return.
         finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        finishAutocompleteFragment.setHint("Enter Destination");
 
         // Set up a PlaceSelectionListener to handle the response.
         finishAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {

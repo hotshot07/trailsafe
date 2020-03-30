@@ -142,6 +142,22 @@ GoogleMap.OnPolylineClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+                mMap.setMyLocationEnabled(true);
+            } else {
+                //Request Location Permission
+                checkLocationPermission();
+            }
+        } else {
+            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+            mMap.setMyLocationEnabled(true);
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("TrailSafe");
@@ -345,25 +361,11 @@ GoogleMap.OnPolylineClickListener{
         mMap.setOnPolylineClickListener(this);
         // Add a marker in Sydney and move the camera
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(60000); // one minute interval
-        mLocationRequest.setFastestInterval(120000);
+        mLocationRequest.setInterval(600); // one minute interval
+        mLocationRequest.setFastestInterval(120);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-                mMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        } else {
-            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
-            mMap.setMyLocationEnabled(true);
-        }
+
 
 
         MarkerOptions markerOptions = new MarkerOptions()
@@ -385,6 +387,7 @@ GoogleMap.OnPolylineClickListener{
 
         markerPoints.add(origin);
         markerPoints.add(destination);
+
 
 
 
@@ -424,7 +427,7 @@ GoogleMap.OnPolylineClickListener{
 
 
                 //Place Marker at current location
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
 
 
                 //move camera
