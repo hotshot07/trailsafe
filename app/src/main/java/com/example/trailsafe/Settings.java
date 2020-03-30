@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.BufferedReader;
@@ -38,6 +41,7 @@ public class Settings extends AppCompatActivity {
 
     private static final String TAG = "SettingDoc";
     private static final String filename = "settingsFile";
+    private static final String file2 = "contactFile";
 
     private FirebaseAuth mAuth;
     public Button signOutButton;
@@ -78,7 +82,7 @@ public class Settings extends AppCompatActivity {
         additionalData = new String[2];
         //init();
 
-        final ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
                             android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.units));
         ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(Settings.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.timer_length));
@@ -116,7 +120,7 @@ public class Settings extends AppCompatActivity {
 
 
         //now read from local cache and make spinner according to that
-        String value = load();
+        //String value = load();
 //        int pos = selectSpinnerItemByValue(mySpinner, value);
 
 //        mySpinner.post(new Runnable() {
@@ -126,7 +130,25 @@ public class Settings extends AppCompatActivity {
 //            }
 //        });
 
-        setSavedItem(mySpinner, 1);
+        //setSavedItem(mySpinner, 1);
+
+
+        //load contact number
+//        DocumentReference docRef = db.collection("User Settings").document("david@test.com");
+//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                settingsClass contactNo = documentSnapshot.toObject(settingsClass.class);
+//
+//                EditText editText = (EditText)findViewById(R.id.emergeny_contact);
+//                editText.setText(contactNo.emergencyNumber, TextView.BufferType.EDITABLE);
+//            }
+//        });
+
+        String value = load();
+        EditText editText = (EditText)findViewById(R.id.emergeny_contact);
+        editText.setText(value, TextView.BufferType.EDITABLE);
+
 
         backButton = (ImageButton)findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -135,20 +157,6 @@ public class Settings extends AppCompatActivity {
                 Settings.super.finish();
             }
         });
-
-
-
-//        public void customObjects() {
-//            // [START custom_objects]
-//            DocumentReference docRef = db.collection("cities").document("BJ");
-//            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                @Override
-//                public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                    City city = documentSnapshot.toObject(City.class);
-//                }
-//            });
-//            // [END custom_objects]
-//        }
 
 
         signOutButton = (Button) findViewById(R.id.sign_out_btn);
@@ -172,12 +180,40 @@ public class Settings extends AppCompatActivity {
 
 //
                 //call storing function
+                storeContact();
                 storeSettingData();
                 save(additionalData);
             }
         });
 
 
+    }
+
+    private void storeContact() {
+        EditText Number = (EditText)findViewById(R.id.emergeny_contact);
+        String value = Number.getText().toString();
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = openFileOutput(file2, MODE_PRIVATE);
+            fos.write(value.getBytes());
+
+            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + filename,
+                    Toast.LENGTH_LONG).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private void setSavedItem(final Spinner mySpinner, final int pos) {
@@ -213,7 +249,7 @@ public class Settings extends AppCompatActivity {
         FileInputStream fis = null;
 
         try {
-            fis = openFileInput(filename);
+            fis = openFileInput(file2);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
@@ -271,15 +307,14 @@ public class Settings extends AppCompatActivity {
 
     public class settingsClass {
         private String emergencyNumber;
-        private String distanceUnits;
-        private String timerLength;
+        private Date thatTime;
 
-        public settingsClass() { }
+        public settingsClass() {
+        }
 
-        public settingsClass(String emergencyNumber, String distanceUnits, String timerLength) {
+        public settingsClass(String emergencyNumber, Date thatTime) {
             this.emergencyNumber = emergencyNumber;
-            this.distanceUnits = distanceUnits;
-            this.timerLength = timerLength;
+            this.thatTime = thatTime;
         }
 
         public String getEmergencyNumber() {
@@ -290,20 +325,12 @@ public class Settings extends AppCompatActivity {
             this.emergencyNumber = emergencyNumber;
         }
 
-        public String getDistanceUnits() {
-            return distanceUnits;
+        public Date getThatTime() {
+            return thatTime;
         }
 
-        public void setDistanceUnits(String distanceUnits) {
-            this.distanceUnits = distanceUnits;
-        }
-
-        public String getTimerLength() {
-            return timerLength;
-        }
-
-        public void setTimerLength(String timerLength) {
-            this.timerLength = timerLength;
+        public void setThatTime(Date thatTime) {
+            this.thatTime = thatTime;
         }
     }
 
