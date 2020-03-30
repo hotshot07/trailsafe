@@ -120,7 +120,8 @@ public class Settings extends AppCompatActivity {
 
 
         //now read from local cache and make spinner according to that
-        //String value = load();
+        String value = load_preferences();
+        toastMessage(value);
 //        int pos = selectSpinnerItemByValue(mySpinner, value);
 
 //        mySpinner.post(new Runnable() {
@@ -145,9 +146,11 @@ public class Settings extends AppCompatActivity {
 //            }
 //        });
 
-        String value = load();
+
+        //load from local internal storage
+        String emergencyNumber = load_phone();
         EditText editText = (EditText)findViewById(R.id.emergeny_contact);
-        editText.setText(value, TextView.BufferType.EDITABLE);
+        editText.setText(emergencyNumber, TextView.BufferType.EDITABLE);
 
 
         backButton = (ImageButton)findViewById(R.id.back_button);
@@ -187,6 +190,39 @@ public class Settings extends AppCompatActivity {
         });
 
 
+    }
+
+    private String load_phone() {
+        FileInputStream fis = null;
+
+        try {
+            fis = openFileInput(file2);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String text;
+
+            while ((text = br.readLine()) != null) {
+                sb.append(text).append("\n");
+            }
+
+            return(sb.toString());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
     }
 
     private void storeContact() {
@@ -245,11 +281,11 @@ public class Settings extends AppCompatActivity {
         return -1;
     }
 
-    private String load() {
+    private String load_preferences() {
         FileInputStream fis = null;
 
         try {
-            fis = openFileInput(file2);
+            fis = openFileInput(filename);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder sb = new StringBuilder();
