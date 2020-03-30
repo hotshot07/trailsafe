@@ -8,6 +8,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
@@ -33,7 +37,10 @@ import java.util.Locale;
 
 
 
-public class DriveMode extends AppCompatActivity implements LocationListener {
+public class DriveMode extends AppCompatActivity implements LocationListener, SensorEventListener {
+    private static final String TAG = "DriveMode";
+    private SensorManager sensorManager;
+    Sensor accelerometer;
     private Chronometer chronometer;
     private boolean running;
     private long pauseOffSet;
@@ -65,14 +72,15 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive_mode);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(DriveMode.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         chronometer = findViewById(R.id.chronometer);
 
 
-
-
         //----------pictures and set them
-        ImageView ProfileView = (ImageView) findViewById(R.id.ProfileView);
+       // ImageView ProfileView = (ImageView) findViewById(R.id.ProfileView);
         //ImageView MovementView = (ImageView) findViewById(R.id.MovementView);
       //  ImageView AccelerationView = (ImageView) findViewById(R.id.AccelerationView);
       //  ImageView SpeedView = (ImageView) findViewById(R.id.SpeedView);
@@ -112,6 +120,15 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
     }
 
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i){
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent){
+
+    }
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
