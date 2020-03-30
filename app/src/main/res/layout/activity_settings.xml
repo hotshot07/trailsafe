@@ -222,5 +222,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/save_set_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="163dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/colorAccent"
+        android:text="SAVE"
+        android:textColor="#280B5C"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_out_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contact" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
