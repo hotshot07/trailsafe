@@ -62,7 +62,7 @@
         android:id="@+id/title"
         android:layout_width="242dp"
         android:layout_height="85dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="@font/alegreya_sans_sc"
         android:gravity="center"
         android:text="@string/trailsafe"
@@ -71,6 +71,7 @@
         android:textSize="50sp"
         app:autoSizeTextType="none"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

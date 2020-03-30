@@ -2,13 +2,16 @@ package com.example.trailsafe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
@@ -16,9 +19,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -37,7 +37,10 @@ import java.util.Locale;
 
 
 
-public class DriveMode extends AppCompatActivity implements LocationListener {
+public class DriveMode extends AppCompatActivity implements LocationListener, SensorEventListener {
+    private static final String TAG = "DriveMode";
+    private SensorManager sensorManager;
+    Sensor accelerometer;
     private Chronometer chronometer;
     private boolean running;
     private long pauseOffSet;
@@ -69,19 +72,15 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive_mode);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(DriveMode.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         chronometer = findViewById(R.id.chronometer);
 
 
-
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("TrailSafe");
-
-
         //----------pictures and set them
-        ImageView ProfileView = (ImageView) findViewById(R.id.ProfileView);
+       // ImageView ProfileView = (ImageView) findViewById(R.id.ProfileView);
         //ImageView MovementView = (ImageView) findViewById(R.id.MovementView);
       //  ImageView AccelerationView = (ImageView) findViewById(R.id.AccelerationView);
       //  ImageView SpeedView = (ImageView) findViewById(R.id.SpeedView);
@@ -121,6 +120,15 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
     }
 
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i){
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent){
+
+    }
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
@@ -204,47 +212,5 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.example_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
-            case  R.id.item_profile:
-                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.item_settings:
-                Intent intent = new Intent( DriveMode.this, Settings.class);
-                startActivity(intent);
-                return true;
-
-            case  R.id.item2:
-                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem1:
-                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem2:
-                Toast.makeText(this, "Sub Item 2 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
 }
