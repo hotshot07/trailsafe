@@ -133,15 +133,15 @@
     <TextView
         android:id="@+id/AccelerationText"
         android:layout_width="150dp"
-        android:layout_height="33dp"
+        android:layout_height="34dp"
         android:gravity="center"
         android:text="Current Acceleration"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.76" />
+        app:layout_constraintVertical_bias="0.763" />
 
     <TextView
         android:id="@+id/SpeedText"
