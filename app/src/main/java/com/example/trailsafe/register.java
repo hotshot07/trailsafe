@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class register extends AppCompatActivity {
     EditText Password;
     Button registerB;
     ProgressBar progressBar;
+    ImageButton backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,13 @@ public class register extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        backButton = (ImageButton)findViewById(R.id.closeButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                register.super.finish();
+            }
+        });
         registerB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

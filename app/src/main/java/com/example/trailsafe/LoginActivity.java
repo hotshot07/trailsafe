@@ -52,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                    toastMessage("Successfully signed out.");
+                    //Log.d(TAG, "onAuthStateChanged:signed_out");
+                    //toastMessage("Successfully signed out.");
 
                 }
                 // ...
