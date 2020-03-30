@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     List<Address> addressList = null;
     String startLocString = null;
     String destLocString = null;
+    TextView startView;
+    TextView endView;
 
 
     // Create a new Places client instance.
@@ -73,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
         ImageButton btn_settings = (ImageButton) findViewById(R.id.Settings);
+
 
         btn_settings.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
         }
         PlacesClient placesClient = Places.createClient(this);
-
+        startView = findViewById(R.id.StartPoint);
 
 
         // Initialize the AutocompleteSupportFragments.
@@ -112,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Specify the types of place data to return.
         startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        startAutocompleteFragment.setHint("Start Point");
 
         // Set up a PlaceSelectionListener to handle the response.
         startAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
                 startLocString = place.getName();
+                startView.setText(place.getName());
 
                 Log.i(TAG, "Latlng: " + place.getLatLng().toString());
 
@@ -143,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Specify the types of place data to return.
         finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-
+        finishAutocompleteFragment.setHint("Enter Destination");
+        endView = findViewById(R.id.EndPoint);
         // Set up a PlaceSelectionListener to handle the response.
         finishAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -152,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
 
                 destLocString = place.getName();
+                endView.setText(destLocString);
                 Log.i(TAG, "Latlng: " + place.getLatLng().toString());
                 finishLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
 
