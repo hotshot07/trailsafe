@@ -18,14 +18,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".ProfileActivity"></activity>
         <activity
             android:name=".LoginActivity"
-            android:parentActivityName=".LaunchScreen">
-        </activity>
+            android:parentActivityName=".LaunchScreen"></activity>
         <activity android:name=".Timer" />
         <activity android:name=".DriveMode" />
-        <activity android:name=".CountDown"/>
-
+        <activity android:name=".CountDown" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -41,6 +40,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
@@ -53,10 +55,11 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:parentActivityName=".LaunchScreen"></activity>
+            android:parentActivityName=".LaunchScreen" />
         <activity
             android:name=".Settings"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".register" />
     </application>
 
 </manifest>

@@ -7,40 +7,7 @@
     tools:context=".MainActivity"
     android:background="@drawable/homescreen_background">
 
-    <EditText
-        android:id="@+id/finish_point"
-        android:layout_width="270dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="44dp"
-        android:autofillHints=""
-        android:background="@drawable/input_field"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="@string/Finish_Point"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_point" />
 
-    <EditText
-        android:id="@+id/start_point"
-        android:layout_width="270dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="164dp"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="44dp"
-        android:autofillHints=""
-        android:background="@drawable/input_field"
-        android:ems="10"
-        android:fontFamily="sans-serif"
-        android:hint="@string/Start_Point"
-        android:inputType="textPersonName"
-        android:textIsSelectable="false"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/NextButton"
@@ -76,6 +43,79 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <fragment
+        android:id="@+id/start_autocomplete_fragment"
+
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="270dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="164dp"
+        android:autofillHints=""
+        android:background="@drawable/input_greyfield"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="@string/Start_Point"
+        android:inputType="textPersonName"
+        android:textIsSelectable="false"
+        android:textSize="20sp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+
+        android:id="@+id/StartPoint"
+        android:layout_width="113dp"
+        android:layout_height="27dp"
+        android:background="@drawable/input_field"
+        android:ems="10"
+        android:fontFamily="@font/alegreya_sans_sc"
+        android:text="Starting Point"
+        android:textAlignment="viewStart"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/start_autocomplete_fragment"
+        app:layout_constraintEnd_toEndOf="@+id/start_autocomplete_fragment"
+        app:layout_constraintStart_toStartOf="@+id/start_autocomplete_fragment">
+
+
+    </TextView>
+
+    <fragment
+        android:id="@+id/finish_autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="270dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="44dp"
+        android:autofillHints=""
+        android:background="@drawable/input_field"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:hint="@string/Finish_Point"
+        android:inputType="textPersonName"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/start_autocomplete_fragment" />
+
+    <TextView
+
+        android:id="@+id/EndPoint"
+        android:layout_width="113dp"
+        android:layout_height="27dp"
+        android:background="@drawable/input_field"
+        android:ems="10"
+        android:fontFamily="@font/alegreya_sans_sc"
+        android:text="Ending Point"
+        android:textAlignment="viewStart"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/finish_autocomplete_fragment"
+        app:layout_constraintEnd_toEndOf="@+id/finish_autocomplete_fragment"
+        app:layout_constraintStart_toStartOf="@+id/finish_autocomplete_fragment">
+
+
+    </TextView>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -83,7 +123,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="164dp"
-        app:layout_constraintEnd_toStartOf="@+id/start_point"
+        app:layout_constraintEnd_toStartOf="@+id/start_autocomplete_fragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/footblue_icon" />
@@ -95,7 +135,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/finish_point"
+        app:layout_constraintEnd_toStartOf="@+id/finish_autocomplete_fragment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:srcCompat="@drawable/footorange_icon" />
@@ -119,7 +159,7 @@
         android:id="@+id/Settings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="TapToSlideAgain"
+        android:onClick="TapToSlide"
         android:layout_marginEnd="80dp"
         android:layout_marginRight="80dp"
         android:layout_marginBottom="50dp"
@@ -136,8 +176,9 @@
         android:background="@drawable/input_spinner"
         android:entries="@array/Spinner_transport"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finish_point" />
+        app:layout_constraintTop_toBottomOf="@+id/finish_autocomplete_fragment" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
