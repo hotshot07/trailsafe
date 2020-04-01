@@ -4,165 +4,174 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/settings_screen_bg"
     tools:context=".DriveMode">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        />
     <Chronometer
         android:id="@+id/chronometer"
-        android:layout_width="214dp"
-        android:layout_height="70dp"
+        android:layout_width="210dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:textColor="@color/std_white"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.236" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_default"
         android:onClick="startChronometer"
         android:text="start"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/button_default"
         android:onClick="pauseChronometer"
         android:text="pause"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
+        app:layout_constraintTop_toBottomOf="@+id/chronometer"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
+        android:background="@drawable/button_default"
         android:onClick="resetChronometer"
         android:text="reset"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.351" />
-
+        app:layout_constraintTop_toBottomOf="@+id/chronometer" />
 
     <TextView
         android:id="@+id/DistanceNumber"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="24dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.682" />
+        app:layout_constraintTop_toBottomOf="@+id/Distancetext"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/SpeedNumber"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="24dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.524" />
+        app:layout_constraintTop_toBottomOf="@+id/SpeedText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/AcceletationNumber"
         android:layout_width="0dp"
-        android:layout_height="44dp"
+        android:layout_height="24dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="number"
-        android:textSize="30sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.848" />
+        app:layout_constraintTop_toBottomOf="@+id/AccelerationText"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/Distancetext"
-        android:layout_width="60dp"
+        android:layout_width="150dp"
         android:layout_height="34dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="Distance Travelled"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.624" />
+        app:layout_constraintTop_toBottomOf="@+id/SpeedNumber"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/AccelerationText"
-        android:layout_width="94dp"
-        android:layout_height="39dp"
+        android:layout_width="150dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
         android:text="Current Acceleration"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.552"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
-
-    <ImageView
-        android:id="@+id/ProfileView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/default_profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/DistanceNumber"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/SpeedText"
-        android:layout_width="60dp"
-        android:layout_height="34dp"
+        android:layout_width="94dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
         android:text="Current Speed"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.467" />
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/Emergency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/ic_report_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.541"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="242dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/alegreya_sans_sc"
+        android:gravity="center"
+        android:text="Drive Mode"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
