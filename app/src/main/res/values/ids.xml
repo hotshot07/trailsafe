@@ -4,4 +4,5 @@
     <item name="txtLocation" type="id" />
     <item name="webView" type="id" />
     <item name="editText2" type="id" />
+    <item name="Geolocate" type="id"></item>
 </resources>
