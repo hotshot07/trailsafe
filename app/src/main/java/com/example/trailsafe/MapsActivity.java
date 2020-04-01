@@ -2,10 +2,16 @@ package com.example.trailsafe;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,29 +19,39 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.trailsafe.helper.DirectionsJSONParser;
+import com.example.trailsafe.helper.PolylineData;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -47,6 +63,7 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.internal.PolylineEncoding;
+import com.google.maps.model.Bounds;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.DirectionsRoute;
 import com.google.maps.model.TravelMode;
@@ -75,7 +92,8 @@ import java.util.concurrent.TimeUnit;
 //import com.google.android.gms.common.api.Status;
 //import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+GoogleMap.OnPolylineClickListener{
 
     private static final String TAG = "LocationsDocs";
 
@@ -84,8 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private int  REQUEST_LOCATION_PERMISSION = 1;
 
     private Location mLastLocation;
-    private Location origin;
-    private Location destination;
+
     private Marker mMarker = null;
     private LocationRequest mLocationRequest;
     private GeoApiContext mGeoApiContext = null;
@@ -96,8 +113,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient mGoogleApiClient;
     private Marker destMarker;
     private Marker originMarker;
+    List<Address> addressList = null;
     ArrayList<LatLng> listPoints;
     ArrayList markerPoints = new ArrayList();
+    ArrayList<Marker> markers = new ArrayList<>();
+    LatLng origin;
+    LatLng destination;
+    double defaultValue = 0.0;
+    private long duration;
+    private String durString;
+    TextView durationDisplay;
+    private ArrayList<PolylineData> mPolyLinesData = new ArrayList<>();
+    private String originString;
+    private String destString;
+    private double originLat;
+    private double originLng;
+    private double destLat, destLng;
+    private LatLngBounds bounds;
 
 
     Button button;
@@ -109,10 +141,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("TrailSafe");
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //retrieve the origin as a string from previous activity
+        Intent receive = getIntent();
+        originString = receive.getStringExtra("OriginString");
+        destString = receive.getStringExtra("DestString");
+
+        originLat = receive.getDoubleExtra("OriginLat",defaultValue);
+        originLng = receive.getDoubleExtra("OriginLng",defaultValue);
+        destLat = receive.getDoubleExtra("DestLat", defaultValue);
+        destLng = receive.getDoubleExtra("DestLng",defaultValue);
+
+
+
+        origin = new LatLng(originLat,originLng);
+        destination = new LatLng(destLat, destLng);
+
+        //bounds = new LatLngBounds(origin,destination);
+
+
+
+
+
 
         //this.txtLocation = (TextView) findViewById(R.id.txtLocation);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -122,6 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Code here executes on main thread after user presses button
                 Intent driveModeIntent = new Intent(getApplicationContext(),DriveMode.class);
                 startActivity(driveModeIntent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
 
         });
@@ -138,14 +198,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
+
+
+
     }
 
-    private void calculateDirections(Marker marker){
+    private void calculateDirections(){
         Log.d(TAG, "calculateDirections: calculating directions.");
 
         com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
-                marker.getPosition().latitude,
-                marker.getPosition().longitude
+                destMarker.getPosition().latitude,
+                destMarker.getPosition().longitude
         );
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
 
@@ -165,8 +228,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.d(TAG, "calculateDirections: duration: " + result.routes[0].legs[0].duration);
                 Log.d(TAG, "calculateDirections: distance: " + result.routes[0].legs[0].distance);
                 Log.d(TAG, "calculateDirections: geocodedWayPoints: " + result.geocodedWaypoints[0].toString());
-
+                duration = (result.routes[0].legs[0].duration.inSeconds)/60;
                 addPolylinesToMap(result);
+
+                duration = result.routes[0].legs[0].duration.inSeconds;
+                durString = result.routes[0].legs[0].duration.humanReadable;
+                durationDisplay.setText("ETA = " + durString);
             }
 
             @Override
@@ -182,6 +249,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void run() {
                 Log.d(TAG, "run: result routes: " + result.routes.length);
+                if(!mPolyLinesData.isEmpty()){
+                    for (PolylineData polylineData: mPolyLinesData){
+                        polylineData.getPolyline().remove();
+                    }
+                    mPolyLinesData.clear();
+                    mPolyLinesData = new ArrayList<>();
+                }
 
                 for(DirectionsRoute route: result.routes){
                     Log.d(TAG, "run: leg: " + route.legs[0].toString());
@@ -200,8 +274,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         ));
                     }
                     Polyline polyline = mMap.addPolyline(new PolylineOptions().addAll(newDecodedPath));
-                    polyline.setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                    polyline.setColor(ContextCompat.getColor(getApplicationContext(), R.color.lightGrey));
                     polyline.setClickable(true);
+                    mPolyLinesData.add(new PolylineData(polyline,route.legs[0]));
+
+                    onPolylineClick(polyline);
 
                 }
             }
@@ -260,34 +337,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
     }
 
-   /* public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) findViewById(R.id.editText);
-        String location = locationSearch.getText().toString();
-        List<Address> addressList = null;
 
-        if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-
-            //search location update
-
-
-            //////////////////
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        }
-    }*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnPolylineClickListener(this);
         // Add a marker in Sydney and move the camera
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(60000); // one minute interval
@@ -305,245 +360,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             mMap.setMyLocationEnabled(true);
         }
 
-        LatLng trinity = new LatLng(53.344059, -6.254567);
-        MarkerOptions markerOptions = new MarkerOptions().position(trinity)
-                .title("Origin")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        if(originLat != 0 && originLng != 0) {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(origin)
+                    .title("Start")
+                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footorange_icon));
+            originMarker = mMap.addMarker(markerOptions);
+            markers.add(originMarker);
+
+            markerOptions = new MarkerOptions()
+                    .position(destination)
+                    .title("End")
+                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footblue_icon));
+            destMarker = mMap.addMarker(markerOptions);
+            markers.add(destMarker);
+            listPoints.add(origin);
+            listPoints.add(destination);
 
 
-        LatLng ucd = new LatLng(53.307272, -6.220564);
-        MarkerOptions markerOptions1 = new MarkerOptions().position(ucd)
-                .title("Destination")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        originMarker = mMap.addMarker(markerOptions);
-        destMarker = mMap.addMarker(markerOptions1);
-        listPoints.add(trinity);
-        listPoints.add(ucd);
-
-        markerPoints.add(trinity);
-        markerPoints.add(ucd);
-
-        calculateDirections(destMarker);
+            markerPoints.add(origin);
+            markerPoints.add(destination);
 
 
-        //EditText locationSearch = (EditText) findViewById(R.id.editText);
-        //String location = locationSearch.getText().toString();
-        //List<Address> addressList = null;
+            calculateDirections();
 
-       /* if (location != null || !location.equals("")) {
-            Geocoder geocoder = new Geocoder(this);
-            try {
-                addressList = geocoder.getFromLocationName(location, 1);
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(origin);
+            builder.include(destination);
+            LatLngBounds bounds = builder.build();
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Address address = addressList.get(0);
-            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        }*/
-
-       mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-           @Override
-           public void onMapLongClick(LatLng latLng) {
-
-                   if (markerPoints.size() > 1) {
-                       markerPoints.clear();
-                       mMap.clear();
-                   }
-
-                   // Adding new item to the ArrayList
-                   markerPoints.add(latLng);
-
-                   // Creating MarkerOptions
-                   MarkerOptions options = new MarkerOptions();
-
-                   // Setting the position of the marker
-                   options.position(latLng);
-
-                   if (markerPoints.size() == 1) {
-                       options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                   } else if (markerPoints.size() == 2) {
-                       options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                   }
-
-                   // Add new marker to the Google Map Android API V2
-                   mMap.addMarker(options);
-
-                   // Checks, whether start and end locations are captured
-                   if (markerPoints.size() >= 2) {
-                       LatLng origin = (LatLng) markerPoints.get(0);
-                       LatLng dest = (LatLng) markerPoints.get(1);
-
-                       // Getting URL to the Google Directions API
-                       String url = getDirectionsUrl(origin, dest);
-
-                       DownloadTask downloadTask = new DownloadTask();
-
-                       // Start downloading json data from Google Directions API
-                       downloadTask.execute(url);
-                   }
-
-               }
-           });
-    }
-    private class DownloadTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-
-            String data = "";
-
-            try {
-                data = downloadUrl(url[0]);
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            ParserTask parserTask = new ParserTask();
-
-
-            parserTask.execute(result);
+            int padding = 200; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            googleMap.moveCamera(cu);
 
         }
-    }
-
-    /**
-     * A class to parse the Google Places in JSON format
-     */
-    private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-
-        // Parsing the data in non-ui thread
-        @Override
-        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
-
-            JSONObject jObject;
-            List<List<HashMap<String, String>>> routes = null;
-
-            try {
-                jObject = new JSONObject(jsonData[0]);
-                DirectionsJSONParser parser = new DirectionsJSONParser();
-
-                routes = parser.parse(jObject);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return routes;
-        }
-
-        @Override
-        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            ArrayList points = null;
-            PolylineOptions lineOptions = null;
-            MarkerOptions markerOptions = new MarkerOptions();
-
-            for (int i = 0; i < result.size(); i++) {
-                Toast toast = Toast.makeText(getApplicationContext(),"Here",Toast.LENGTH_SHORT);
-                toast.show();
-                points = new ArrayList();
-                lineOptions = new PolylineOptions();
-
-                List<HashMap<String, String>> path = result.get(i);
-
-                for (int j = 0; j < path.size(); j++) {
-                    HashMap<String, String> point = path.get(j);
-
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    LatLng position = new LatLng(lat, lng);
-
-                    points.add(position);
-                }
-
-                lineOptions.addAll(points);
-                lineOptions.width(12);
-                lineOptions.color(Color.RED);
-                lineOptions.geodesic(true);
-
-            }
-            if(points != null) {
-// Drawing polyline in the Google Map for the i-th route
-                mMap.addPolyline(lineOptions);
-            }
-            else {
-                Toast.makeText(getApplicationContext(),"Directions Could not be Calculated", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private String getDirectionsUrl(LatLng origin, LatLng dest) {
-
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-
-        // Sensor enabled
-        String sensor = "sensor=false";
-        String mode = "mode=driving";
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor + "&" + mode;
-
-        // Output format
-        String output = "json";
-
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + R.string.google_maps_api_key;
 
 
-        return url;
-    }
 
-    /**
-     * A method to download json data from url
-     */
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(strUrl);
 
-            urlConnection = (HttpURLConnection) url.openConnection();
 
-            urlConnection.connect();
-
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb = new StringBuffer();
-
-            String line = "";
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            data = sb.toString();
-
-            br.close();
-
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        } finally {
-            iStream.close();
-            urlConnection.disconnect();
-        }
-        return data;
     }
 
 
@@ -558,24 +418,55 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         + "" + location.getLongitude());
                 mLastLocation = location;
 
+
                 //call location storage function
                 StoreLocation(mLastLocation);
 
 
-                if(mMarker != null){
-                    mMarker.remove();
-                }
+
 
                 //Place Marker at current location
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
-                markerOptions.title("You Are Here");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                mMarker = mMap.addMarker((markerOptions));
+
+                if (originLat == 0 && originLng == 0){
+                    origin = new LatLng(location.getLatitude(), location.getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(origin)
+                            .title("Start")
+                            .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footorange_icon));
+                    originMarker = mMap.addMarker(markerOptions);
+                    markers.add(originMarker);
+
+                    markerOptions = new MarkerOptions()
+                            .position(destination)
+                            .title("End")
+                            .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footblue_icon));
+                    destMarker = mMap.addMarker(markerOptions);
+                    markers.add(destMarker);
+                    listPoints.add(origin);
+                    listPoints.add(destination);
+
+
+                    markerPoints.add(origin);
+                    markerPoints.add(destination);
+
+
+                    calculateDirections();
+
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    builder.include(origin);
+                    builder.include(destination);
+                    LatLngBounds bounds = builder.build();
+
+                    int padding = 200; // offset from edges of the map in pixels
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    mMap.moveCamera(cu);
+
+                }
+
 
                 //move camera
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11f));
             }
         }
     };
@@ -632,8 +523,89 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case  R.id.item_profile:
+                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case  R.id.item_settings:
+                Intent intent = new Intent( MapsActivity.this, Settings.class);
+                startActivity(intent);
+                return true;
+
+            case  R.id.item2:
+                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case  R.id.subitem1:
+                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case  R.id.subitem2:
+                Toast.makeText(this, "Sub Item 2 selected", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onPolylineClick(Polyline polyline) {
+        int index = 0;
+        for(PolylineData polylineData: mPolyLinesData){
+            index++;
+            Log.d(TAG, "onPolylineClick: toString: " + polylineData.toString());
+            if(polyline.getId().equals(polylineData.getPolyline().getId())){
+                polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.design_default_color_primary_dark));
+                polylineData.getPolyline().setZIndex(1);
+
+                LatLng endLocation = new LatLng(
+                        polylineData.getLeg().endLocation.lat,
+                        polylineData.getLeg().endLocation.lng
+                );
 
 
+                MarkerOptions markerOptions = new MarkerOptions()
+                        .position(endLocation)
+                        .title("Trip #: " + index)
+                        .snippet("Duration: " + polylineData.getLeg().duration)
+                        .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
+                destMarker = mMap.addMarker(markerOptions);
+                destMarker.showInfoWindow();
+            }
+
+            else{
+                polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.lightGrey));
+                polylineData.getPolyline().setZIndex(0);
+            }
+        }
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
 }
 
 
