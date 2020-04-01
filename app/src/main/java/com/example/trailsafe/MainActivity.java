@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     static String KEY_ANIM = "TARGET_ANIM";
     static String Target_Move = "Translate";
     static String Target_Rotate = "Rotate";
+    static String Target_Reverse = "right2left";
     String target_op = Target_Move;
 
     @Override
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
+        final Animation right2left = AnimationUtils.loadAnimation(this, R.anim.right2left);
 
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
@@ -53,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
                 arg0.startAnimation(rotate);
             }
         });
+
+        btn_profile.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View arg0){
+                target_op = Target_Reverse;
+                arg0.startAnimation(right2left);
+            }
+        });
+
 
         rotate.setAnimationListener(animationListener);
         move.setAnimationListener(animationListener);
@@ -75,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if(target_op == Target_Move){
                     Intent intent = new Intent(MainActivity.this, Settings.class);
+                    intent.putExtra(KEY_ANIM, target_op);
+                    startActivity(intent);
+                }
+
+                if(target_op == Target_Reverse){
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
                 }
