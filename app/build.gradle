@@ -47,5 +47,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-simple:1.7.25'
     implementation 'com.google.android.libraries.places:places:2.2.0'
     implementation 'com.google.maps.android:android-maps-utils:1.0.2'
+    implementation 'com.marozzi.segmentedtab:segmented-tab:1.0.2'
 
 }

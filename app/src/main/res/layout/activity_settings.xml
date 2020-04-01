@@ -20,18 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/pref1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="12dp"
-        android:gravity="center_vertical"
-        android:text="@string/distance_units"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+
 
     <TextView
         android:id="@+id/pref_title"
@@ -82,12 +71,25 @@
         android:id="@+id/view3"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="50dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emergeny_contact" />
+
+    <TextView
+        android:id="@+id/pref1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/mode_of_transport"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view" />
 
     <TextView
         android:id="@+id/textView4"
@@ -96,33 +98,136 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="20dp"
         android:gravity="center_vertical"
-        android:text="Timer Length (mins)"
+        android:text="Timer Length"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pref1" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        style="@android:style/Widget.DeviceDefault.Light.Spinner"
-        android:layout_width="120dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="54dp"
-        android:backgroundTint="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:text="Distance Units "
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-    <Spinner
-        android:id="@+id/spinner2"
-        style="@android:style/Widget.DeviceDefault.Light.Spinner"
-        android:layout_width="120dp"
+
+
+    <com.marozzi.segmentedtab.SegmentedGroup
+        android:id="@+id/toggle_transport"
+        android:layout_width="180dp"
         android:layout_height="35dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="54dp"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginTop="13dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner1" />
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:sg_background_color="@color/colorPrimaryDark"
+        app:sg_background_color_selected="@color/lighterGrey"
+        app:sg_corner_radius="8dp"
+        app:sg_text_color="@color/lighterGrey"
+        app:sg_text_color_selected="@color/colorPrimaryDark">
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_two_one"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Walk"
+            android:textSize="12dp" />
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_two_two"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Run"
+            android:textSize="12dp" />
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_two_three"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Bike"
+            android:textSize="12dp" />
+
+    </com.marozzi.segmentedtab.SegmentedGroup>
+
+    <com.marozzi.segmentedtab.SegmentedGroup
+        android:id="@+id/toggle_timer"
+        android:layout_width="180dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggle_transport"
+        app:sg_background_color="@color/colorPrimaryDark"
+        app:sg_background_color_selected="@color/lighterGrey"
+        app:sg_corner_radius="8dp"
+        app:sg_text_color="@color/lighterGrey"
+        app:sg_text_color_selected="@color/colorPrimaryDark">
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_three_one"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textSize="12dp" />
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_three_two"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="10"
+            android:textSize="12dp" />
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_three_three"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="30"
+            android:textSize="12dp" />
+
+    </com.marozzi.segmentedtab.SegmentedGroup>
+
+    <com.marozzi.segmentedtab.SegmentedGroup
+        android:id="@+id/toggle_units"
+        android:layout_width="180dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.92"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggle_timer"
+        app:sg_background_color="@color/colorPrimaryDark"
+        app:sg_background_color_selected="@color/lighterGrey"
+        app:sg_corner_radius="8dp"
+        app:sg_text_color="@color/lighterGrey"
+        app:sg_text_color_selected="@color/colorPrimaryDark">
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_four_one"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Km"
+            android:textSize="12dp" />
+
+        <com.marozzi.segmentedtab.SegmentedTab
+            android:id="@+id/element_four_two"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="Mi"
+            android:textSize="12dp" />
+
+
+    </com.marozzi.segmentedtab.SegmentedGroup>
+
+
 
     <Button
         android:id="@+id/sign_out_btn"
@@ -142,7 +247,7 @@
         android:id="@+id/view"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="130dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -153,7 +258,7 @@
         android:id="@+id/view2"
         android:layout_width="322dp"
         android:layout_height="1dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:background="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -168,7 +273,7 @@
         android:background="@drawable/input_phone"
         android:ems="10"
         android:inputType="phone"
-        android:text="+353"
+        android:text="@string/phone"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -212,5 +317,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/about" />
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
