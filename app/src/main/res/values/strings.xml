@@ -34,23 +34,18 @@
     <string name="register_password">Password</string>
     <string name="register_button">Register</string>
     <string name="here_underlined"><u>here</u></string>
+    <string name="phone"><u>+353</u></string>
+
+
+
     <string-array name="Spinner_transport">
         <item>Walking</item>
         <item>Jogging</item>
         <item>Cycling</item>
     </string-array>
 
-    <string-array name="units">
-        <item>M</item>
-        <item>KM</item>
 
-    </string-array>
 
-    <string-array name="timer_length">
-        <item>1hr</item>
-        <item>2hrs</item>
-        <item>3hrs</item>
 
-    </string-array>
 
 </resources>

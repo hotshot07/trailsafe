@@ -82,6 +82,7 @@ public class register extends AppCompatActivity {
                             progressBar.setVisibility(View.GONE);
                             Intent intent = new Intent(register.this, MainActivity.class);
                             startActivity(intent);
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                         }
                     }
 

@@ -2,6 +2,7 @@ package com.example.trailsafe;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -19,6 +20,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -46,7 +50,6 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
     private long pauseOffSet;
     TextView SpeedNumber;
     TextView DistanceNumber;
-    TextView AccelerationNumber;
     private Button mTimerButton;
     @SuppressLint("MissingPermission")
     public void doSomethingElse() {
@@ -74,12 +77,14 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive_mode);
 
-         Log.d(TAG, "Oncreate: Initializing sensor services");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("TrailSafe");
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(DriveMode.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        Log.d(TAG, "Oncreate: Registered Accelerometer listener");
         chronometer = findViewById(R.id.chronometer);
 
 
@@ -109,7 +114,6 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
 
         SpeedNumber = findViewById(R.id.SpeedNumber);
          DistanceNumber =  findViewById(R.id.DistanceNumber);
-         AccelerationNumber = findViewById(R.id.AccelerationNumber);
         //check for gps permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -132,14 +136,7 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
-        //Log.d(TAG, "onSensorChanged: X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
-        float nCurrentAcc = sensorEvent.values[0];
-        Formatter fmt2 = new Formatter(new StringBuilder());
-        fmt2.format(Locale.US, "%5.1f", nCurrentAcc);
-        String strCurrentAcc = fmt2.toString();
-        strCurrentAcc = strCurrentAcc.replace(" ", "0");
 
-        AccelerationNumber.setText(strCurrentAcc);
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -224,5 +221,39 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.example_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case  R.id.item_profile:
+                Intent intent = new Intent( DriveMode.this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
+                return true;
+
+            case  R.id.item_settings:
+                intent = new Intent( DriveMode.this, Settings.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
 }

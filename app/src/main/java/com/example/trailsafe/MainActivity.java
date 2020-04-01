@@ -225,13 +225,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Settings.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
                 }
                 if(target_op == profileTarget_move){
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
                 }
             }
 

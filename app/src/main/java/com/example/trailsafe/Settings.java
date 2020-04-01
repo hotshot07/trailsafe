@@ -76,24 +76,14 @@ public class Settings extends AppCompatActivity {
 //        File cacheFile = new File(getCacheDir(), filename);
 
 
-        mySpinner = (Spinner) findViewById(R.id.spinner1);
-        mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+
 
         additionalData = new String[2];
         //init();
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(Settings.this,
-                            android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.units));
-        ArrayAdapter<String> myAdapter2 = new ArrayAdapter<String>(Settings.this,
-                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.timer_length));
 
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(myAdapter);
 
-        myAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner2.setAdapter(myAdapter2);
-
-        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 additionalData[0] = mySpinner.getSelectedItem().toString();
@@ -118,10 +108,12 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+         */
+
 
         //now read from local cache and make spinner according to that
         String value = load_preferences();
-        toastMessage(value);
+        //toastMessage(value);
 //        int pos = selectSpinnerItemByValue(mySpinner, value);
 
 //        mySpinner.post(new Runnable() {
@@ -158,7 +150,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Settings.super.finish();
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_down,R.anim.slide_out_up);
             }
         });
 
@@ -172,6 +164,7 @@ public class Settings extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
@@ -420,10 +413,12 @@ public class Settings extends AppCompatActivity {
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
+
+
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 }
 
