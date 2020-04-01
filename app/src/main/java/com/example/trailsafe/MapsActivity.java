@@ -497,25 +497,17 @@ GoogleMap.OnPolylineClickListener{
         switch (item.getItemId()) {
 
             case  R.id.item_profile:
-                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent( MapsActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                 return true;
 
             case  R.id.item_settings:
-                Intent intent = new Intent( MapsActivity.this, Settings.class);
+                intent = new Intent( MapsActivity.this, Settings.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                 return true;
 
-            case  R.id.item2:
-                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem1:
-                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem2:
-                Toast.makeText(this, "Sub Item 2 selected", Toast.LENGTH_SHORT).show();
-                return true;
 
             default:
                 return super.onOptionsItemSelected(item);

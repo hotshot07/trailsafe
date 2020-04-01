@@ -19,7 +19,13 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ProfileActivity.super.finish();
+                overridePendingTransition(R.anim.slide_in_down,R.anim.slide_out_up);
             }
         });
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 }

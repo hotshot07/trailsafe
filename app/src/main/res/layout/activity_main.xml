@@ -17,7 +17,6 @@
         android:fontFamily="@font/noto_sans_bold"
         android:includeFontPadding="false"
         android:text="@string/start"
-        android:onClick="TapToMove"
         android:textAllCaps="false"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="25sp"
@@ -170,17 +169,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/settings_icon" />
 
-    <Spinner
+    <com.marozzi.segmentedtab.SegmentedGroup
         android:id="@+id/transportMethod"
-        android:layout_width="150dp"
-        android:layout_height="44dp"
+        android:layout_width="180dp"
+        android:layout_height="41dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/input_spinner"
         android:entries="@array/Spinner_transport"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finish_autocomplete_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/EndPoint"
+        app:sg_background_color="@color/colorPrimaryDark"
+        app:sg_background_color_selected="@color/lighterGrey"
+        app:sg_corner_radius="8dp"
+        app:sg_text_color="@color/lighterGrey"
+        app:sg_text_color_selected="@color/colorPrimaryDark">
+
+    <com.marozzi.segmentedtab.SegmentedTab
+        android:id="@+id/element_one_one"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="Walk"
+        android:textSize="12dp" />
+
+    <com.marozzi.segmentedtab.SegmentedTab
+        android:id="@+id/element_one_two"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="Run"
+        android:textSize="12dp" />
+
+    <com.marozzi.segmentedtab.SegmentedTab
+        android:id="@+id/element_one_three"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="Bike"
+        android:textSize="12dp" />
+
+    </com.marozzi.segmentedtab.SegmentedGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
