@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     String destLocString = null;
     TextView startView;
     TextView endView;
+    ImageButton geoLocButton;
 
 
     // Create a new Places client instance.
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
         ImageButton btn_settings = (ImageButton) findViewById(R.id.Settings);
+        geoLocButton = (ImageButton) findViewById(R.id.Geolocate);
 
 
         btn_settings.setOnClickListener(new Button.OnClickListener() {
@@ -99,6 +102,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 target_op = profileTarget_move;
                 arg0.startAnimation(move);
+            }
+        });
+
+        geoLocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLatLng = new LatLng(0,0);
+                startLocString = "Your Location";
+                startView.setText(startLocString);
             }
         });
 

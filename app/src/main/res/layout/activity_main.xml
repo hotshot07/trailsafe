@@ -82,6 +82,19 @@
 
     </TextView>
 
+
+    <ImageButton
+        android:id="@id/Geolocate"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/geo_background"
+        android:scaleType="center"
+        android:src="@drawable/ic_geolocate_foreground"
+        app:layout_constraintBottom_toBottomOf="@+id/start_autocomplete_fragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/start_autocomplete_fragment"
+        app:layout_constraintTop_toTopOf="@+id/start_autocomplete_fragment" />
+
     <fragment
         android:id="@+id/finish_autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

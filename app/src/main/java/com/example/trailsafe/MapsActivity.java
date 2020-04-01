@@ -365,39 +365,40 @@ GoogleMap.OnPolylineClickListener{
             mMap.setMyLocationEnabled(true);
         }
 
+        if(originLat != 0 && originLng != 0) {
+            MarkerOptions markerOptions = new MarkerOptions()
+                    .position(origin)
+                    .title("Start")
+                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footorange_icon));
+            originMarker = mMap.addMarker(markerOptions);
+            markers.add(originMarker);
 
-        MarkerOptions markerOptions = new MarkerOptions()
-                                    .position(origin)
-                                    .title("Start")
-                                    .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footorange_icon));
-        originMarker = mMap.addMarker(markerOptions);
-        markers.add(originMarker);
-
-        markerOptions = new MarkerOptions()
-                .position(destination)
-                .title("End")
-                .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
-        destMarker = mMap.addMarker(markerOptions);
-        markers.add(destMarker);
-        listPoints.add(origin);
-        listPoints.add(destination);
-
-
-        markerPoints.add(origin);
-        markerPoints.add(destination);
+            markerOptions = new MarkerOptions()
+                    .position(destination)
+                    .title("End")
+                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footblue_icon));
+            destMarker = mMap.addMarker(markerOptions);
+            markers.add(destMarker);
+            listPoints.add(origin);
+            listPoints.add(destination);
 
 
+            markerPoints.add(origin);
+            markerPoints.add(destination);
 
-        calculateDirections();
 
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(origin);
-        builder.include(destination);
-        LatLngBounds bounds = builder.build();
+            calculateDirections();
 
-        int padding = 200; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.moveCamera(cu);
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(origin);
+            builder.include(destination);
+            LatLngBounds bounds = builder.build();
+
+            int padding = 200; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+            googleMap.moveCamera(cu);
+
+        }
 
 
 
@@ -417,6 +418,7 @@ GoogleMap.OnPolylineClickListener{
                         + "" + location.getLongitude());
                 mLastLocation = location;
 
+
                 //call location storage function
                 StoreLocation(mLastLocation);
 
@@ -425,6 +427,42 @@ GoogleMap.OnPolylineClickListener{
 
                 //Place Marker at current location
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+                if (originLat == 0 && originLng == 0){
+                    origin = new LatLng(location.getLatitude(), location.getLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions()
+                            .position(origin)
+                            .title("Start")
+                            .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footorange_icon));
+                    originMarker = mMap.addMarker(markerOptions);
+                    markers.add(originMarker);
+
+                    markerOptions = new MarkerOptions()
+                            .position(destination)
+                            .title("End")
+                            .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.footblue_icon));
+                    destMarker = mMap.addMarker(markerOptions);
+                    markers.add(destMarker);
+                    listPoints.add(origin);
+                    listPoints.add(destination);
+
+
+                    markerPoints.add(origin);
+                    markerPoints.add(destination);
+
+
+                    calculateDirections();
+
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    builder.include(origin);
+                    builder.include(destination);
+                    LatLngBounds bounds = builder.build();
+
+                    int padding = 200; // offset from edges of the map in pixels
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                    mMap.moveCamera(cu);
+
+                }
 
 
                 //move camera
@@ -536,7 +574,7 @@ GoogleMap.OnPolylineClickListener{
             index++;
             Log.d(TAG, "onPolylineClick: toString: " + polylineData.toString());
             if(polyline.getId().equals(polylineData.getPolyline().getId())){
-                polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                polylineData.getPolyline().setColor(ContextCompat.getColor(getApplicationContext(), R.color.design_default_color_primary_dark));
                 polylineData.getPolyline().setZIndex(1);
 
                 LatLng endLocation = new LatLng(
