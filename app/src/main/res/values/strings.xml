@@ -35,7 +35,7 @@
     <string name="register_button">Register</string>
     <string name="here_underlined"><u>here</u></string>
     <string name="phone"><u>+353</u></string>
-
+    <string name="confirm_email">Confirm Email</string>
 
 
     <string-array name="Spinner_transport">
