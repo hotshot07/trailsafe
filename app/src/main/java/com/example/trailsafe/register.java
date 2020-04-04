@@ -21,10 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 public class register extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
-    EditText Email;
-    EditText Password;
+    EditText Email, ConfirmEmail;
+    EditText Password, ConfirmPassword;
+    EditText FullName;
     Button registerB;
-    ProgressBar progressBar;
     ImageButton backButton;
 
     @Override
@@ -34,10 +34,19 @@ public class register extends AppCompatActivity {
 
         Email = findViewById(R.id.register_email);
         Password = findViewById(R.id.register_password);
+        ConfirmEmail = findViewById(R.id.register_email2);
+        ConfirmPassword = findViewById(R.id.register_password2);
         registerB = findViewById(R.id.register_button);
-        progressBar = findViewById(R.id.progressBar);
+        FullName = findViewById(R.id.register_name);
 
         mAuth = FirebaseAuth.getInstance();
+
+        if(mAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            finish();
+        }
+
+
 
         backButton = (ImageButton)findViewById(R.id.closeButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +59,11 @@ public class register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String finalEmail = Email.getText().toString().trim();
+                String finalEmail2 = ConfirmEmail.getText().toString().trim();
                 String finalPassword = Password.getText().toString().trim();
+                String finalPassword2 = ConfirmPassword.getText().toString().trim();
+                String finalName = FullName.getText().toString().trim();
+
 
                 if (TextUtils.isEmpty(finalEmail)) {
                     Email.setError("Email is Required.");
@@ -66,23 +79,44 @@ public class register extends AppCompatActivity {
                     return;
                 }
 
+                if(TextUtils.isEmpty(finalName)){
+                    FullName.setError("Username is empty");
+                }
+
                 if (Password.length() < 6) {
                     Password.setError("Password Must be >= 6 Characters");
                     return;
                 }
 
+                if (FullName.length() < 2) {
+                    FullName.setError("Full name must be greater than 2 characters");
+                    return;
+                }
+
+                if(!finalEmail.equals(finalEmail2)){
+                    ConfirmEmail.setError("Emails do not match");
+                    return;
+                }
+
+
+                if(!finalPassword.equals(finalPassword2)){
+                    ConfirmPassword.setError("Passwords do not match");
+                    return;
+                }
 
 
                 mAuth.createUserWithEmailAndPassword(finalEmail, finalPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.VISIBLE);
+
                         if (task.isSuccessful()) {
                             Toast.makeText(register.this, "User Created.", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+
                             Intent intent = new Intent(register.this, MainActivity.class);
                             startActivity(intent);
                             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                        }else {
+                            Toast.makeText(register.this, "Error ! " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
