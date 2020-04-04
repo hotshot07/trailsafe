@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -111,6 +112,13 @@ private void startTimer(){
     private void openDialog(){
         myDialog outOfTimeDialog = new myDialog();
         // Contact help here.
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage("00353857082526",
+                null,
+                "HELP needed.",
+                null,
+                null);
+        // ----
         outOfTimeDialog.show(getSupportFragmentManager(), "dialog");
     }
 }
