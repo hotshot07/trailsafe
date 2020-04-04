@@ -59,6 +59,8 @@ public class DriveMode extends AppCompatActivity implements LocationListener {
             }
         });
 
+        startTimer();
+
     }
 
     private void startTimer(){
