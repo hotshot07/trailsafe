@@ -142,9 +142,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-
-
-
     }
 
     private void startTimer(){
@@ -157,7 +154,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onFinish() {
                 // Add the move functionality.
-                ;
+                startActivity(new Intent(MapsActivity.this, CountDown.class));
             }
         }.start();
 
