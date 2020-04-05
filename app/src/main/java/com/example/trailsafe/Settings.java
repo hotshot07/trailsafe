@@ -112,7 +112,7 @@ public class Settings extends AppCompatActivity {
 
 
         //now read from local cache and make spinner according to that
-        String value = load_preferences();
+        //String value = load_preferences();
         //toastMessage(value);
 //        int pos = selectSpinnerItemByValue(mySpinner, value);
 
@@ -178,8 +178,8 @@ public class Settings extends AppCompatActivity {
 //
                 //call storing function
                 storeContact();
-                storeSettingData();
-                save(additionalData);
+                //storeSettingData();
+                //save(additionalData);
             }
         });
 
@@ -229,7 +229,7 @@ public class Settings extends AppCompatActivity {
             fos = openFileOutput(file2, MODE_PRIVATE);
             fos.write(value.getBytes());
 
-            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + filename,
+            Toast.makeText(this, "Saved to " + getFilesDir() + "/" + file2,
                     Toast.LENGTH_LONG).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
