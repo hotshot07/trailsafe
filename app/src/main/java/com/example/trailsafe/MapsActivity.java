@@ -130,6 +130,7 @@ GoogleMap.OnPolylineClickListener{
     private double originLng;
     private double destLat, destLng;
     private LatLngBounds bounds;
+    int modeFlag;
 
 
     Button button;
@@ -160,6 +161,7 @@ GoogleMap.OnPolylineClickListener{
         originLng = receive.getDoubleExtra("OriginLng",defaultValue);
         destLat = receive.getDoubleExtra("DestLat", defaultValue);
         destLng = receive.getDoubleExtra("DestLng",defaultValue);
+        modeFlag = receive.getIntExtra("ModeFlag",1);
 
 
 
@@ -213,7 +215,10 @@ GoogleMap.OnPolylineClickListener{
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
 
         directions.alternatives(true);
-        directions.mode(TravelMode.BICYCLING);
+        if (modeFlag == 2) {
+            directions.mode(TravelMode.BICYCLING);
+        }
+        else { directions.mode(TravelMode.WALKING);}
         directions.origin(
                 new com.google.maps.model.LatLng(
                         originMarker.getPosition().latitude,
@@ -580,6 +585,7 @@ GoogleMap.OnPolylineClickListener{
                         .title("Trip #: " + index)
                         .snippet("Duration: " + polylineData.getLeg().duration)
                         .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
+                destMarker.remove();
                 destMarker = mMap.addMarker(markerOptions);
                 destMarker.showInfoWindow();
             }

@@ -31,6 +31,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.model.LatLng;
+import com.marozzi.segmentedtab.SegmentedGroup;
+import com.marozzi.segmentedtab.SegmentedTab;
 
 import java.io.IOException;
 import java.lang.annotation.Target;
@@ -50,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_next;
     private ImageButton btn_settings;
     private ImageButton btn_profile;
-    double x = 0;
-    int y = 0;
+    int modeFlag = 1;
     LatLng startLatLng = null;
     LatLng finishLatLng = null;
     EditText finishPoint;
@@ -188,6 +189,20 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        ((SegmentedGroup) findViewById(R.id.transportMethod)).setOnSegmentedGroupListener(new SegmentedGroup.OnSegmentedGroupListener() {
+            @Override
+            public void onSegmentedTabSelected(SegmentedTab tab, int checkedId) {
+                Toast.makeText(MainActivity.this, tab.getText(), Toast.LENGTH_SHORT).show();
+                if(tab.getText().equals("Bike") ){
+                    modeFlag = 2;
+                }
+                else {
+                    modeFlag = 1;
+                }
+
+            }
+        });
+
         rotate.setAnimationListener(animationListener);
         move.setAnimationListener(animationListener);
 
@@ -205,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 if(target_op == Target_Rotate) {
                     if (startLatLng != null && finishLatLng != null) {
                         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                        intent.putExtra("ModeFlag", modeFlag);
                         intent.putExtra("OriginName", startLocString);
                         intent.putExtra("OriginLat", startLatLng.lat);
                         intent.putExtra("OriginLng", startLatLng.lng);
