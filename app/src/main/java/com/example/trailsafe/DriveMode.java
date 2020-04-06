@@ -50,6 +50,7 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
     private long pauseOffSet;
     TextView SpeedNumber;
     TextView DistanceNumber;
+    TextView AccelerationNumber;
     private Button mTimerButton;
     @SuppressLint("MissingPermission")
     public void doSomethingElse() {
@@ -85,6 +86,7 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
 
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener(DriveMode.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        Log.d(TAG, "Oncreate: Registered Accelerometer listener");
         chronometer = findViewById(R.id.chronometer);
 
 
@@ -114,6 +116,7 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
 
         SpeedNumber = findViewById(R.id.SpeedNumber);
          DistanceNumber =  findViewById(R.id.DistanceNumber);
+         AccelerationNumber = findViewById(R.id.AccelerationNumber);
         //check for gps permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -136,7 +139,14 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent){
+        //Log.d(TAG, "onSensorChanged: X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+        float nCurrentAcc = sensorEvent.values[0];
+        Formatter fmt2 = new Formatter(new StringBuilder());
+        fmt2.format(Locale.US, "%5.1f", nCurrentAcc);
+        String strCurrentAcc = fmt2.toString();
+        strCurrentAcc = strCurrentAcc.replace(" ", "0");
 
+        AccelerationNumber.setText(strCurrentAcc);
     }
     @Override
     public void onLocationChanged(Location location) {
