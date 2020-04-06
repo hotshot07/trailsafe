@@ -7,11 +7,15 @@
     android:background="@drawable/settings_screen_bg"
     tools:context=".DriveMode">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
     <Chronometer
         android:id="@+id/chronometer"
         android:layout_width="210dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:textColor="@color/std_white"
         android:textSize="30sp"
@@ -164,7 +168,7 @@
         android:id="@+id/title"
         android:layout_width="242dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="55dp"
         android:fontFamily="@font/alegreya_sans_sc"
         android:gravity="center"
         android:text="Drive Mode"

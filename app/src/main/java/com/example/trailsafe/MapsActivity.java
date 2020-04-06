@@ -130,6 +130,7 @@ GoogleMap.OnPolylineClickListener{
     private double originLng;
     private double destLat, destLng;
     private LatLngBounds bounds;
+    int modeFlag;
 
 
     Button button;
@@ -160,6 +161,7 @@ GoogleMap.OnPolylineClickListener{
         originLng = receive.getDoubleExtra("OriginLng",defaultValue);
         destLat = receive.getDoubleExtra("DestLat", defaultValue);
         destLng = receive.getDoubleExtra("DestLng",defaultValue);
+        modeFlag = receive.getIntExtra("ModeFlag",1);
 
 
 
@@ -213,7 +215,10 @@ GoogleMap.OnPolylineClickListener{
         DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
 
         directions.alternatives(true);
-        directions.mode(TravelMode.BICYCLING);
+        if (modeFlag == 2) {
+            directions.mode(TravelMode.BICYCLING);
+        }
+        else { directions.mode(TravelMode.WALKING);}
         directions.origin(
                 new com.google.maps.model.LatLng(
                         originMarker.getPosition().latitude,
@@ -535,25 +540,17 @@ GoogleMap.OnPolylineClickListener{
         switch (item.getItemId()) {
 
             case  R.id.item_profile:
-                Toast.makeText(this, "Item 1 selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent( MapsActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                 return true;
 
             case  R.id.item_settings:
-                Intent intent = new Intent( MapsActivity.this, Settings.class);
+                intent = new Intent( MapsActivity.this, Settings.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
                 return true;
 
-            case  R.id.item2:
-                Toast.makeText(this, "Item 3 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem1:
-                Toast.makeText(this, "Sub Item 1 selected", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case  R.id.subitem2:
-                Toast.makeText(this, "Sub Item 2 selected", Toast.LENGTH_SHORT).show();
-                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -588,6 +585,7 @@ GoogleMap.OnPolylineClickListener{
                         .title("Trip #: " + index)
                         .snippet("Duration: " + polylineData.getLeg().duration)
                         .icon(bitmapDescriptorFromVector(getApplicationContext(),R.drawable.footblue_icon));
+                destMarker.remove();
                 destMarker = mMap.addMarker(markerOptions);
                 destMarker.showInfoWindow();
             }

@@ -31,6 +31,8 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.maps.model.LatLng;
+import com.marozzi.segmentedtab.SegmentedGroup;
+import com.marozzi.segmentedtab.SegmentedTab;
 
 import java.io.IOException;
 import java.lang.annotation.Target;
@@ -51,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_next;
     private ImageButton btn_settings;
     private ImageButton btn_profile;
-    double x = 0;
-    int y = 0;
+    int modeFlag = 1;
     LatLng startLatLng = null;
     LatLng finishLatLng = null;
     EditText finishPoint;
@@ -108,6 +109,93 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        if(!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
+        }
+        PlacesClient placesClient = Places.createClient(this);
+        startView = findViewById(R.id.StartPoint);
+
+
+        // Initialize the AutocompleteSupportFragments.
+        AutocompleteSupportFragment startAutocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.start_autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        startAutocompleteFragment.setHint("Start Point");
+
+        // Set up a PlaceSelectionListener to handle the response.
+        startAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                startLocString = place.getName();
+                startView.setText(place.getName());
+
+                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
+
+                Toast.makeText(getApplicationContext(),startLocString,Toast.LENGTH_LONG);
+
+                startLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+
+
+        });
+
+        // Initialize the AutocompleteSupportFragments.
+        AutocompleteSupportFragment finishAutocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.finish_autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+        finishAutocompleteFragment.setHint("Enter Destination");
+        endView = findViewById(R.id.EndPoint);
+        // Set up a PlaceSelectionListener to handle the response.
+        finishAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
+                destLocString = place.getName();
+                endView.setText(destLocString);
+                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
+                finishLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
+
+
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+
+
+        });
+
+        ((SegmentedGroup) findViewById(R.id.transportMethod)).setOnSegmentedGroupListener(new SegmentedGroup.OnSegmentedGroupListener() {
+            @Override
+            public void onSegmentedTabSelected(SegmentedTab tab, int checkedId) {
+                Toast.makeText(MainActivity.this, tab.getText(), Toast.LENGTH_SHORT).show();
+                if(tab.getText().equals("Bike") ){
+                    modeFlag = 2;
+                }
+                else {
+                    modeFlag = 1;
+                }
+
+            }
+        });
+
         rotate.setAnimationListener(animationListener);
         move.setAnimationListener(animationListener);
 
@@ -125,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 if(target_op == Target_Rotate) {
                     if (startLatLng != null && finishLatLng != null) {
                         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                        intent.putExtra("ModeFlag", modeFlag);
                         intent.putExtra("OriginName", startLocString);
                         intent.putExtra("OriginLat", startLatLng.lat);
                         intent.putExtra("OriginLng", startLatLng.lng);
@@ -145,13 +234,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Settings.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
                 }
                 if(target_op == profileTarget_move){
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
                 }
 
                 if(target_op == Target_Reverse){
