@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     static String KEY_ANIM = "TARGET_ANIM";
     static String Target_Move = "Translate";
-    static String profileTarget_move = "Rotate Profile button";
+    static String profileTarget_move = "Move Profile button";
     static String Target_Rotate = "Rotate";
     String target_op = Target_Move;
     private static final String TAG = "LocationsDocs";
@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         final Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
-
+        final Animation slide = AnimationUtils.loadAnimation(this, R.anim.slide);
+        
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
         ImageButton btn_settings = (ImageButton) findViewById(R.id.Settings);
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 target_op = profileTarget_move;
-                arg0.startAnimation(move);
+                arg0.startAnimation(slide);
             }
         });
 
@@ -259,15 +260,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void TapToBlink(View view) {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide);
-        btn_settings.startAnimation(animation);
-    }
 
-    public void TapToSlide(View view) {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide);
-        btn_profile.startAnimation(animation);
-    }
 
 
 
