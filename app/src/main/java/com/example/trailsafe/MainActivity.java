@@ -47,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     static String Target_Move = "Translate";
     static String profileTarget_move = "Rotate Profile button";
     static String Target_Rotate = "Rotate";
-    static String Target_Reverse = "right2left";
     String target_op = Target_Move;
     private static final String TAG = "LocationsDocs";
     private Button btn_next;
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         final Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
-        final Animation right2left = AnimationUtils.loadAnimation(this, R.anim.right2left);
 
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
@@ -100,11 +98,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_profile.setOnClickListener(new Button.OnClickListener(){
+        btn_profile.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View arg0){
-                target_op = Target_Reverse;
-                arg0.startAnimation(right2left);
+            public void onClick(View arg0) {
+                target_op = profileTarget_move;
+                arg0.startAnimation(move);
+            }
+        });
+
+        geoLocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLatLng = new LatLng(0,0);
+                startLocString = "Your Location";
+                startView.setText(startLocString);
             }
         });
 
@@ -241,12 +248,6 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
-                }
-
-                if(target_op == Target_Reverse){
-                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                    intent.putExtra(KEY_ANIM, target_op);
-                    startActivity(intent);
                 }
             }
 
