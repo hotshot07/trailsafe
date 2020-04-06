@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     static String Target_Move = "Translate";
     static String profileTarget_move = "Rotate Profile button";
     static String Target_Rotate = "Rotate";
+    static String Target_Reverse = "right2left";
     String target_op = Target_Move;
     private static final String TAG = "LocationsDocs";
     private Button btn_next;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
         final Animation move = AnimationUtils.loadAnimation(this, R.anim.move);
+        final Animation right2left = AnimationUtils.loadAnimation(this, R.anim.right2left);
 
         Button btn_next = (Button) findViewById(R.id.NextButton);
         ImageButton btn_profile = (ImageButton) findViewById(R.id.Profile);
@@ -97,96 +99,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_profile.setOnClickListener(new Button.OnClickListener() {
+        btn_profile.setOnClickListener(new Button.OnClickListener(){
             @Override
-            public void onClick(View arg0) {
-                target_op = profileTarget_move;
-                arg0.startAnimation(move);
+            public void onClick(View arg0){
+                target_op = Target_Reverse;
+                arg0.startAnimation(right2left);
             }
         });
 
-        geoLocButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startLatLng = new LatLng(0,0);
-                startLocString = "Your Location";
-                startView.setText(startLocString);
-            }
-        });
-
-
-        if(!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
-        }
-        PlacesClient placesClient = Places.createClient(this);
-        startView = findViewById(R.id.StartPoint);
-
-
-        // Initialize the AutocompleteSupportFragments.
-        AutocompleteSupportFragment startAutocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.start_autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        startAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-        startAutocompleteFragment.setHint("Start Point");
-
-        // Set up a PlaceSelectionListener to handle the response.
-        startAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                startLocString = place.getName();
-                startView.setText(place.getName());
-
-                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
-
-                Toast.makeText(getApplicationContext(),startLocString,Toast.LENGTH_LONG);
-
-                startLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
-            }
-
-
-        });
-
-        // Initialize the AutocompleteSupportFragments.
-        AutocompleteSupportFragment finishAutocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.finish_autocomplete_fragment);
-
-        // Specify the types of place data to return.
-        finishAutocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-        finishAutocompleteFragment.setHint("Enter Destination");
-        endView = findViewById(R.id.EndPoint);
-        // Set up a PlaceSelectionListener to handle the response.
-        finishAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-
-                destLocString = place.getName();
-                endView.setText(destLocString);
-                Log.i(TAG, "Latlng: " + place.getLatLng().toString());
-                finishLatLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
-
-
-
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
-            }
-
-
-        });
 
         rotate.setAnimationListener(animationListener);
         move.setAnimationListener(animationListener);
@@ -225,13 +145,19 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Settings.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                 }
                 if(target_op == profileTarget_move){
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                     intent.putExtra(KEY_ANIM, target_op);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_down);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                }
+
+                if(target_op == Target_Reverse){
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    intent.putExtra(KEY_ANIM, target_op);
+                    startActivity(intent);
                 }
             }
 
