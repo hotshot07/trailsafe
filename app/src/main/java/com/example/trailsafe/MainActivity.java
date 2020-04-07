@@ -206,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
         rotate.setAnimationListener(animationListener);
         move.setAnimationListener(animationListener);
+        slide.setAnimationListener(animationListener);
 
     }
 
