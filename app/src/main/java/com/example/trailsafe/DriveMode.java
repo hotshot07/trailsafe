@@ -18,6 +18,7 @@ import android.location.LocationManager;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
@@ -51,6 +52,12 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
     TextView SpeedNumber;
     TextView DistanceNumber;
     private Button mTimerButton;
+
+    private long routeDuration;
+    private CountDownTimer mCountDownTimer;
+    private boolean mTimerBoolean;
+    private long mTimeLeftMillis = 10000;
+
     @SuppressLint("MissingPermission")
     public void doSomethingElse() {
 
@@ -69,14 +76,32 @@ public class DriveMode extends AppCompatActivity implements LocationListener, Se
             }
         });
 
+        startTimer();
+
     }
 
+    private void startTimer(){
+        mCountDownTimer = new CountDownTimer(mTimeLeftMillis, 1000){
+            @Override
+            public void onTick(long millisUntilFinished){ 
+                mTimeLeftMillis = millisUntilFinished;}
+
+            @Override
+            public void onFinish(){
+                startActivity(new Intent(DriveMode.this, CountDown.class));}
+            }
+        }.start();
+
+        mTimerBoolean = true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drive_mode);
 
+        routeDuration = 1000 * 10;
+        startTimer();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("TrailSafe");
