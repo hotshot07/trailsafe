@@ -1,4 +1,5 @@
 # TrailSafe
 
-Main app project, this is to be cloned by each member. Work on your own modules
-within the project then push any changes to this repository 
+Android Project for our course
+
+I worked on the login,register page using Firebase
